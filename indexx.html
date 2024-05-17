@@ -41,32 +41,7 @@
           <br />
           <button type="submit">Submit</button>
         </form>
-      </section>
-
-      <section id="dashboard">
-        <h2>Hasil Analisis</h2>
-        <article>
-          <h3>Analysis Results</h3>
-          <p>Lorem ipsum dolor sit amet.</p>
-          <p>Abcd.</p>
-        </article>
-      </section>
-
-      <section id="chart1">
-        <h2>Chart</h2>
-        <article>
-          <!-- Placeholder -->
-        </article>
-      </section>
-
-      <section id="chart2">
-        <h2>Chart</h2>
-        <article>
-          <!-- Placeholder -->
-        </article>
-      </section>
-
-      <section class="dashboardd">
+        <section class="dashboardd">
         <article class="chart-section">
           <h2>Sales Overview</h2>
           <canvas id="sales-chart"></canvas>
@@ -96,12 +71,86 @@
           </form>
         </aside>
       </section>
+      </section>
+      
+      <section id="dashboard">
+        <h2>Hasil Analisis</h2>
+        <article>
+          <h3>Data Tabel</h3>
+          <div>
+            <label for="sort-key">Sort by:</label>
+            <select id="sort-key">
+              <option value="borough">Borough</option>
+              <option value="sale price">Sale Price</option>
+              <option value="sale date">Sale Date</option>
+              <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
+            </select>
+            <button id="sort-button">Sort</button>
+          </div>
+          <div>
+            <label for="filter-key">Filter by:</label>
+            <select id="filter-key">
+              <option value="borough">Borough</option>
+              <option value="building class category">Building Class Category</option>
+              <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
+            </select>
+            <input type="text" id="filter-value" placeholder="Filter value" />
+            <button id="filter-button">Filter</button>
+          </div>
+          <table border 1 id="data-table">
+            <thead>
+              <tr>
+                <th>Borough</th>
+                <th>Neighborhood</th>
+                <th>Building Class Category</th>
+                <th>Tax Class At Present</th>
+                <th>Block</th>
+                <th>Lot</th>
+                <th>Easement</th>
+                <th>Building Class At Present</th>
+                <th>Address</th>
+                <th>Apartment Number</th>
+                <th>Zip Code</th>
+                <th>Residential Units</th>
+                <th>Commercial Units</th>
+                <th>Total Units</th>
+                <th>Land Square Feet</th>
+                <th>Gross Square Feet</th>
+                <th>Year Built</th>
+                <th>Tax Class</th>
+                <th>Building Class At Time Of Sale</th>
+                <th>Sale Price</th>
+                <th>Sale Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data akan diisi menggunakan JavaScript -->
+            </tbody>
+          </table>
+        </article>
+      </section>
+
+      <section id="chart1">
+        <h2>Chart</h2>
+        <article>
+          <!-- Placeholder -->
+        </article>
+      </section>
+      
+      <section id="chart2">
+        <h2>Chart</h2>
+        <article>
+          <!-- Placeholder -->
+        </article>
+      </section>
+      
     </main>
 
     <footer>
       <p>&copy; Team 11 - Surabaya.</p>
     </footer>
-
+    
+    
     <script>
       const salesChart = new Chart(document.getElementById("sales-chart"), {
         type: "line",
@@ -124,7 +173,7 @@
           },
         },
       });
-
+      
       const customerDemographicsChart = new Chart(
         document.getElementById("customer-demographics-chart"),
         {
@@ -157,6 +206,7 @@
           },
         }
       );
-    </script>
-  </body>
+      </script>
+      <script src="index.js"></script>
+ </body>
 </html>
