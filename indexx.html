@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
-    <header>
+    <header class="box--header">
       <h1>Dashboard NYC Property</h1>
       <nav>
         <ul>
@@ -41,37 +41,37 @@
           <br />
         </form>
         <section class="dashboardd">
-        <article class="chart-section">
-          <h2>Sales Overview</h2>
-          <canvas id="sales-chart"></canvas>
-        </article>
-        <article class="chart-section">
-          <h2>Customer Demographics</h2>
-          <canvas id="customer-demographics-chart"></canvas>
-        </article>
-        <aside class="filter-section">
-          <h2>Filters</h2>
-          <form>
-            <label for="select-timeframe">Timeframe:</label>
-            <select id="select-timeframe">
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
-            </select>
-            <br />
-            <label for="select-product">Product:</label>
-            <select id="select-product">
-              <option value="">All Products</option>
-              <option value="product-1">Product 1</option>
-              <option value="product-2">Product 2</option>
-            </select>
-            <br />
-            <button type="submit">Apply Filters</button>
-          </form>
-        </aside>
+          <article class="chart-section">
+            <h2>Sales Overview</h2>
+            <canvas id="sales-chart"></canvas>
+          </article>
+          <article class="chart-section">
+            <h2>Customer Demographics</h2>
+            <canvas id="customer-demographics-chart"></canvas>
+          </article>
+          <aside class="filter-section">
+            <h2>Filters</h2>
+            <form>
+              <label for="select-timeframe">Timeframe:</label>
+              <select id="select-timeframe">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+              <br />
+              <label for="select-product">Product:</label>
+              <select id="select-product">
+                <option value="">All Products</option>
+                <option value="product-1">Product 1</option>
+                <option value="product-2">Product 2</option>
+              </select>
+              <br />
+              <button type="submit">Apply Filters</button>
+            </form>
+          </aside>
+        </section>
       </section>
-      </section>
-      
+
       <section id="dashboard">
         <h2>Hasil Analisis</h2>
         <article>
@@ -90,7 +90,9 @@
             <label for="filter-key">Filter by:</label>
             <select id="filter-key">
               <option value="-">-</option>
-              <option value="building class category">Building Class Category</option>
+              <option value="building class category">
+                Building Class Category
+              </option>
               <option value="sale month">Sale Month</option>
               <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
             </select>
@@ -130,9 +132,7 @@
         </article>
         <div class="pagination_button">
           <span></span>
-          <div class="index_button">
-            
-          </div>
+          <div class="index_button"></div>
         </div>
       </section>
 
@@ -142,21 +142,19 @@
           <!-- Placeholder -->
         </article>
       </section>
-      
+
       <section id="chart2">
         <h2>Chart</h2>
         <article>
           <!-- Placeholder -->
         </article>
       </section>
-      
     </main>
 
-    <footer>
+    <footer class="box--footer">
       <p>&copy; Team 11 - Surabaya.</p>
     </footer>
-    
-    
+
     <script>
       const salesChart = new Chart(document.getElementById("sales-chart"), {
         type: "line",
@@ -179,7 +177,7 @@
           },
         },
       });
-      
+
       const customerDemographicsChart = new Chart(
         document.getElementById("customer-demographics-chart"),
         {
@@ -212,7 +210,7 @@
           },
         }
       );
-      </script>
-      <script src="index.js"></script>
- </body>
+    </script>
+    <script src="index.js"></script>
+  </body>
 </html>

@@ -4,7 +4,7 @@ body {
   padding: 0;
 }
 
-header {
+.box--header {
   background-color: rgb(255, 168, 168);
   color: #fff;
   padding: 20px;
@@ -48,7 +48,7 @@ section {
   border-radius: 10px;
 }
 
-footer {
+.box--footer {
   background-color: rgb(255, 168, 168);
   color: #fff;
   padding: 20px;
@@ -79,7 +79,7 @@ footer {
 }
 
 /* Tambahan */
-.pagination_button{
+.pagination_button {
   display: flex;
   align-items: center;
   justify-content: space-between;
