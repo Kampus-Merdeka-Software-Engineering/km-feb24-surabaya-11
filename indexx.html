@@ -39,7 +39,6 @@
             <option value="kategori3">Kategori 3</option>
           </select>
           <br />
-          <button type="submit">Submit</button>
         </form>
         <section class="dashboardd">
         <article class="chart-section">
@@ -80,7 +79,7 @@
           <div>
             <label for="sort-key">Sort by:</label>
             <select id="sort-key">
-              <option value="borough">Borough</option>
+              <option value="-">-</option>
               <option value="sale price">Sale Price</option>
               <option value="sale date">Sale Date</option>
               <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
@@ -90,8 +89,9 @@
           <div>
             <label for="filter-key">Filter by:</label>
             <select id="filter-key">
-              <option value="borough">Borough</option>
+              <option value="-">-</option>
               <option value="building class category">Building Class Category</option>
+              <option value="sale month">Sale Month</option>
               <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
             </select>
             <input type="text" id="filter-value" placeholder="Filter value" />
@@ -128,6 +128,12 @@
             </tbody>
           </table>
         </article>
+        <div class="pagination_button">
+          <span></span>
+          <div class="index_button">
+            
+          </div>
+        </div>
       </section>
 
       <section id="chart1">

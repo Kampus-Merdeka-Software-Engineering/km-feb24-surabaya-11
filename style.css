@@ -77,3 +77,10 @@ footer {
     margin: 10px 0;
   }
 }
+
+/* Tambahan */
+.pagination_button{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
