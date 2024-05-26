@@ -5,7 +5,7 @@ body {
 }
 
 .box--header {
-  background-color: rgb(255, 168, 168);
+  background-color: #001f3f;
   color: #fff;
   padding: 20px;
   display: flex;
@@ -36,9 +36,28 @@ nav ul {
 
 main {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
   gap: 20px;
   padding: 20px;
+  grid-template-areas:
+    "chart1 chart2"
+    "chart3 chart4"
+    "dashboard dashboard";
+}
+
+/* Menggunakan ID untuk merujuk elemen */
+#chart1 { grid-area: chart1; }
+#chart2 { grid-area: chart2; }
+#chart3 { grid-area: chart3; }
+#chart4 { grid-area: chart4; }
+#dashboard { grid-area: dashboard; }
+
+.box {
+  background-color: lightgray;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #ccc;
 }
 
 section {
@@ -49,7 +68,7 @@ section {
 }
 
 .box--footer {
-  background-color: rgb(255, 168, 168);
+  background-color: #001f3f;
   color: #fff;
   padding: 20px;
   text-align: center;
@@ -76,6 +95,43 @@ section {
   nav ul li {
     margin: 10px 0;
   }
+}
+
+/* Gaya umum untuk tabel dengan ID data-table */
+#data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#data-table th, #data-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Warna latar belakang untuk baris ganjil */
+#data-table tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+/* Warna latar belakang untuk baris genap */
+#data-table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* Memperkecil ukuran font hanya pada isian tabel (td) */
+#data-table td {
+  font-size: 12px; /* Sesuaikan ukuran font sesuai kebutuhan Anda */
+}
+
+/* Teks rata tengah untuk kolom yang ditentukan */
+#data-table td:nth-of-type(4), /* Total Units */
+#data-table td:nth-of-type(5), /* Land Square Feet */
+#data-table td:nth-of-type(6), /* Gross Square Feet */
+#data-table td:nth-of-type(7), /* Year Built */
+#data-table td:nth-of-type(8), /* Sale Price */
+#data-table td:nth-of-type(9) /* Sale Date */
+{
+  text-align: center;
 }
 
 /* Tambahan */

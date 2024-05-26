@@ -91,25 +91,13 @@ fetch('Data_Team_11.json')
         // Append rows based on filteredData
         filteredData.forEach(datas => {
           var row = document.createElement('tr');
-          row.innerHTML = `<td>${datas['BOROUGH']}</td>
-                           <td>${datas['NEIGHBORHOOD']}</td>
+          row.innerHTML = `<td>${datas['NEIGHBORHOOD']}</td>
                            <td>${datas['BUILDING_CLASS_CATEGORY']}</td>
-                           <td>${datas['TAX_CLASS_AT_PRESENT']}</td>
-                           <td>${datas['BLOCK']}</td>
-                           <td>${datas['LOT']}</td>
-                           <td>${datas['EASE_MENT'] || ''}</td>
-                           <td>${datas['BUILDING_CLASS_AT_PRESENT']}</td>
                            <td>${datas['ADDRESS']}</td>
-                           <td>${datas['APARTMENT_NUMBER'] || ''}</td>
-                           <td>${datas['ZIP_CODE']}</td>
-                           <td>${datas['RESIDENTIAL_UNITS']}</td>
-                           <td>${datas['COMMERCIAL_UNITS']}</td>
                            <td>${datas['TOTAL_UNITS']}</td>
                            <td>${datas['LAND_SQUARE_FEET']}</td>
                            <td>${datas['GROSS_SQUARE_FEET']}</td>
                            <td>${datas['YEAR_BUILT']}</td>
-                           <td>${datas['TAX_CLASS']}</td>
-                           <td>${datas['BUILDING_CLASS_AT_TIME_OF_SALE']}</td>
                            <td>${datas['SALE_PRICE']}</td>
                            <td>${datas['SALE_DATE']}</td>`;
           newTbody.appendChild(row);
@@ -174,6 +162,30 @@ fetch('Data_Team_11.json')
         end_index = array_length
       }
 
+      document.getElementById('go-to-page-button').addEventListener('click', function() {
+        const pageNumber = parseInt(document.getElementById('page-number').value);
+        if (pageNumber >= 1 && pageNumber <= max_index) {
+          current_index = pageNumber;
+          highlightIndex();
+        } else {
+          alert("Invalid page number. Please enter a number between 1 and 51.");
+        }
+      });      
+
+    // Memindahkan displayIndexButtons() ke bagian bawah fetch karena elemen .index_button belum ada saat function ini dipanggil
+    fetch('Data_Team_11.json')
+       .then(response => response.json())
+       .then(data => {
+         // ... your existing code here ...
+
+        // Panggil displayIndexButtons() di sini untuk memastikan elemen .index_button sudah ada
+        displayIndexButtons();
+
+     })
+    .catch(error => {
+     console.error('Error fetching data:', error);
+    });
+
       // Mengupdate teks dalam elemen span dengan kelas pagination_button
       var paginationSpan = document.querySelector(".pagination_button span");
       paginationSpan.textContent = `Showing ${start_index} to ${end_index} of ${array_length} entries`;
@@ -210,25 +222,13 @@ fetch('Data_Team_11.json')
       data.slice(tab_start, tab_end + 1).forEach(datas => {
         var row = document.createElement('tr');
         row.innerHTML = `
-      <td>${datas['BOROUGH']}</td>
       <td>${datas['NEIGHBORHOOD']}</td>
       <td>${datas['BUILDING_CLASS_CATEGORY']}</td>
-      <td>${datas['TAX_CLASS_AT_PRESENT']}</td>
-      <td>${datas['BLOCK']}</td>
-      <td>${datas['LOT']}</td>
-      <td>${datas['EASE_MENT']}</td>
-      <td>${datas['BUILDING_CLASS_AT_PRESENT']}</td>
       <td>${datas['ADDRESS']}</td>
-      <td>${datas['APARTMENT_NUMBER']}</td>
-      <td>${datas['ZIP_CODE']}</td>
-      <td>${datas['RESIDENTIAL_UNITS']}</td>
-      <td>${datas['COMMERCIAL_UNITS']}</td>
       <td>${datas['TOTAL_UNITS']}</td>
       <td>${datas['LAND_SQUARE_FEET']}</td>
       <td>${datas['GROSS_SQUARE_FEET']}</td>
       <td>${datas['YEAR_BUILT']}</td>
-      <td>${datas['TAX_CLASS']}</td>
-      <td>${datas['BUILDING_CLASS_AT_TIME_OF_SALE']}</td>
       <td>${datas['SALE_PRICE']}</td>
       <td>${datas['SALE_DATE']}</td>
     `;

@@ -15,7 +15,7 @@ body {
 }
 
 header {
-  background-color: rgb(255, 168, 168);
+  background-color: #001f3f;
   color: var(--bg-secondary);
   padding: 20px;
   display: flex;
@@ -108,7 +108,7 @@ main {
 }
 
 footer {
-  background-color: rgb(255, 168, 168);
+  background-color: #001f3f;
   color: #fff;
   padding: 29px;
   text-align: center;
