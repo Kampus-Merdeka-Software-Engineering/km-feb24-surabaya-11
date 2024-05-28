@@ -1,6 +1,7 @@
 html,
 body {
   font-family: Arial, sans-serif;
+  background-color: var(--bg-third);
   margin: 0;
   padding: 0;
 }
@@ -8,15 +9,16 @@ body {
 :root {
   --bg-primary: #001f3f;
   --bg-secondary: #fff;
+  --bg-third: #cac0b3;
   --txt-primary: #f7f7f7;
   --txt-secondary: #222222;
-  --icons-bg-primary: #db503e;
+  --icons-bg-primary: #ff595a;
   --icons-bg-secondary: #777777;
 }
 
 .box--header {
   background-color: var(--bg-primary);
-  color: var(--bg-secondary);
+  color: var(--icons-bg-primary);
   font-family: "Poppins", sans-serif;
   padding: 20px;
   display: flex;
@@ -54,7 +56,7 @@ main {
 .container {
   width: 100%;
   height: 60vh;
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-third);
 }
 
 .wrapper {
@@ -109,8 +111,8 @@ main {
 }
 
 .box--footer {
-  background-color: #001f3f;
-  color: #fff;
+  background-color: var(--bg-primary);
+  color: var(--icons-bg-primary);
   padding: 20px;
   text-align: center;
   display: flex;

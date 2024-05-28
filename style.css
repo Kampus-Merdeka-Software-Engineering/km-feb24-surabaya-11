@@ -1,12 +1,21 @@
 body {
   font-family: "Poppins", sans-serif;
+  background-color: var(--bg-third);
   margin: 0;
   padding: 0;
 }
 
+:root {
+  --bg-primary: #001f3f;
+  --bg-secondary: #ff595a;
+  --bg-third: #cac0b3;
+  --txt-primary: #f7f7f7;
+  --txt-secondary: #222222;
+}
+
 .box--header {
-  background-color: #001f3f;
-  color: #fff;
+  background-color: var(--bg-primary);
+  color: var(--bg-secondary);
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -26,12 +35,11 @@ body {
 
 .box--menu:hover {
   background-color: rgb(72, 113, 167);
-  color: #001f3f;
   border-radius: 10%;
 }
 
 .box--judul {
-  color: #fff;
+  color: var(--txt-primary);
   text-decoration: none;
 }
 
@@ -72,15 +80,15 @@ main {
 }
 
 section {
-  background-color: #f4f4f4;
+  background-color: var(--txt-primary);
   padding: 20px;
-  border: 1px solid #ddd;
+  border: 1.5px solid var(--bg-primary);
   border-radius: 10px;
 }
 
 .box--footer {
-  background-color: #001f3f;
-  color: #fff;
+  background-color: var(--bg-primary);
+  color: var(--bg-secondary);
   padding: 20px;
   text-align: center;
   display: flex;
@@ -117,17 +125,17 @@ section {
 #data-table th,
 #data-table td {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--bg-primary);
 }
 
 /* Warna latar belakang untuk baris ganjil */
 #data-table tr:nth-child(odd) {
-  background-color: #f2f2f2;
+  background-color: var(--txt-primary);
 }
 
 /* Warna latar belakang untuk baris genap */
 #data-table tr:nth-child(even) {
-  background-color: #ffffff;
+  background-color: var(--bg-third);
 }
 
 /* Memperkecil ukuran font hanya pada isian tabel (td) */
