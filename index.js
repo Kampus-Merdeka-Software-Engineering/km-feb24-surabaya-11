@@ -58,6 +58,75 @@ fetch("Data_Team_11.json")
       });
 
       
+  fetch('Data_Team_11.json')
+    .then(response => response.json())
+    .then(data => {
+        // Process data
+        const salesData = processData(data);
+
+        // Extract regions and total selling prices
+        const regions = Object.keys(salesData);
+        const totalPrices = Object.values(salesData);
+
+        // Create bar chart
+        const ctx = document.getElementById('totalSalesChart').getContext('2d');
+        const totalSalesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: regions,
+                datasets: [{
+                    label: 'Total Selling Price',
+                    data: totalPrices,
+                    backgroundColor: 'rgba( 47, 79, 79, 1 )',
+                    borderColor: 'rgba( 0, 0, 0, 1 )',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Total Selling Price: $' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    })
+    .catch(error => console.error('Error fetching JSON:', error));
+
+// Function to process JSON data and calculate total selling price by region
+function processData(data) {
+    const salesData = {};
+
+    // Loop through each data entry
+    data.forEach(entry => {
+        const region = entry.NEIGHBORHOOD;
+        const salePrice = parseInt(entry.SALE_PRICE);
+
+        // Add sale price to the corresponding region
+        if (salesData[region]) {
+            salesData[region] += salePrice;
+        } else {
+            salesData[region] = salePrice;
+        }
+    });
+
+    return salesData;
+}
+
 
     // Menampilkan data pada console untuk memastikan data telah diambil dengan benar
     var array = [];

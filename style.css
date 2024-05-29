@@ -33,15 +33,25 @@ body {
   margin-right: 20px;
 }
 
-.box--menu:hover {
-  background-color: var(--bg-secondary);
-  color: var(--bg-primary);
+.box--button {
+  cursor: pointer;
+}
+
+.box--button:hover {
+  background-color: var(--bg-primary);
+  color: var(--bg-secondary);
   border-radius: 10%;
 }
 
 .box--judul {
   color: var(--txt-primary);
   text-decoration: none;
+}
+
+.box--judul:hover {
+  background-color: var(--bg-secondary);
+  color: var(--bg-primary);
+  border-radius: 10%;
 }
 
 main {

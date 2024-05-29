@@ -37,8 +37,9 @@ body {
   margin-right: 20px;
 }
 
-.box--menu:hover {
+.box--judul:hover {
   background-color: var(--bg-secondary);
+  color: var(--bg-primary);
   border-radius: 10%;
 }
 
@@ -48,7 +49,6 @@ body {
 }
 
 main {
-  display: flex;
   padding: 20px;
   height: 60vh;
 }
@@ -68,6 +68,8 @@ main {
 }
 
 .card {
+  width: 100px; /* Lebar kartu */
+  height: 140px; /* Tinggi kartu */
   border: 1px solid #f7f7f7;
   background-color: var(--txt-primary);
   color: var(--txt-secondary);
@@ -81,12 +83,12 @@ main {
 }
 
 .title {
-  font-size: 2em;
+  font-size: 100%;
 }
 
 .icons {
   margin-top: 8px;
-  font-size: 24px;
+  font-size: 35px;
   color: var(--icons-bg-primary);
 }
 
@@ -96,7 +98,7 @@ main {
 }
 
 .btn {
-  margin-top: 16px;
+  margin-top: 28px;
   padding: 8px;
   cursor: pointer;
   border: none;
@@ -105,7 +107,7 @@ main {
 
 .btn:hover {
   background-color: var(--bg-primary);
-  color: var(--txt-primary);
+  color: var(--bg-secondary);
   -ms-transform: rotate(2deg);
   transform: rotate(2deg);
 }
