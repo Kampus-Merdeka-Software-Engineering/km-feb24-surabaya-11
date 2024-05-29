@@ -1,119 +1,196 @@
 // Mengambil data dari file JSON
-fetch('Data_Team_11.json')
-  .then(response => response.json())
-  .then(data => {
+fetch("Data_Team_11.json")
+  .then((response) => response.json())
+  .then((data) => {
     // Menampilkan data pada console untuk memastikan data telah diambil dengan benar
-    var array = []
-    var array_length = 0
-    var table_size = 100
-    var start_index = 1
-    var end_index = 0
-    var current_index = 1
-    var max_index = 0
+    var array = [];
+    var array_length = 0;
+    var table_size = 100;
+    var start_index = 1;
+    var end_index = 0;
+    var current_index = 1;
+    var max_index = 0;
 
-
+    function reload() {
+      location.reload();
+    }
     // Tambahan
     function preLoadCalculation() {
-      array = data
-      array_length = array.length
-      max_index = array_length / table_size
+      array = data;
+      array_length = array.length;
+      max_index = array_length / table_size;
 
-      if ((array_length % table_size) > 0) {
-        max_index++
+      if (array_length % table_size > 0) {
+        max_index++;
       }
-
     }
 
     function sorting() {
-      const sortKey = document.getElementById('sort-key').value;
+      const sortKey = document.getElementById("sort-key").value;
       switch (sortKey) {
-        case 'borough':
+        case "borough":
           data.sort((a, b) => a.BOROUGH - b.BOROUGH);
 
           break;
-        case 'sale price':
+        case "sale price":
           data.sort((a, b) => a.SALE_PRICE - b.SALE_PRICE);
 
           break;
-        case 'sale date':
+        case "sale date":
           data.sort((a, b) => new Date(a.SALE_DATE) - new Date(b.SALE_DATE));
           break;
         default:
+          location.reload();
           break;
       }
-      displayTable()
+      displayTable();
     }
-    function filter() {
-      const filterKey = document.getElementById('filter-key').value;
-      const filterValue = document.getElementById('filter-value').value;
-      const filterMonth = filterValue.padStart(2, '0');
+    let filteredData = []; // Deklarasi global untuk data yang sudah difilter
+    let currentPage = 1; // Deklarasi global untuk halaman saat ini
+    const pageSize = 100; // Jumlah item per halaman, sesuaikan dengan kebutuhan Anda
 
-      let filteredData = [];
+    function filter() {
+      const filterKey = document.getElementById("filter-key").value;
+      const filterValue = document.getElementById("filter-value").value;
+      const filterMonth = filterValue.padStart(2, "0");
 
       switch (filterKey) {
-        case 'borough':
-          filteredData = data.filter(item => item.BOROUGH.toString().toLowerCase() === filterValue.toLowerCase());
+        case "borough":
+          filteredData = data.filter(
+            (item) =>
+              item.BOROUGH.toString().toLowerCase() ===
+              filterValue.toLowerCase()
+          );
           break;
-        case 'building class category':
-          filteredData = data.filter(item => item.SALE_DATE.toLowerCase().includes(filterValue.toLowerCase()));
+        case "building class category":
+          filteredData = data.filter((item) =>
+            item.BUILDING_CLASS_CATEGORY.toLowerCase().includes(
+              filterValue.toLowerCase()
+            )
+          );
           break;
-        case 'sale month': // If filtering by sale date
-          // Assuming filterValue is the month in number format (e.g., "02" for February)
-          filteredData = data.filter(item => {
-            // Convert SALE_DATE to Date object
+        case "sale month":
+          filteredData = data.filter((item) => {
             const saleDate = new Date(item.SALE_DATE);
-            // Get the month in number format (with leading zero)
-            const saleMonth = (saleDate.getMonth() + 1).toString().padStart(2, '0');
-            
-            // Check if the month matches the filter value
-            return saleMonth === filterMonth; // Ensure filterValue is also two digits
-        });
+            const saleMonth = (saleDate.getMonth() + 1)
+              .toString()
+              .padStart(2, "0");
+            return saleMonth === filterMonth;
+          });
           break;
         default:
-          console.log('Filter key is not recognized');
-          return; // If no recognized filter key, exit the function
+          alert("Anda Harus memilih kategori");
+          location.reload();
+          return;
       }
-      
 
-      // Retrieve and clear the existing tbody in the table
-      var table = document.getElementById("data-table");
-      var oldTbody = table.querySelector("tbody");
+      if (filterValue === "") {
+        alert("Anda harus memasukkan kata kunci");
+        location.reload();
+        return;
+      } else if (filterKey === "sale month" && isNaN(Number(filterValue))) {
+        alert("Kata Kunci yang dimasukkan Harus Angka");
+        location.reload();
+        return;
+      }
+
+      currentPage = 1; // Reset ke halaman pertama saat filter diterapkan
+      updateTable(filteredData);
+      updatePaginationButtons(filteredData.length);
+    }
+
+    function updateTable(data) {
+      const table = document.getElementById("data-table");
+      const oldTbody = table.querySelector("tbody");
       if (oldTbody) {
         table.removeChild(oldTbody);
       }
 
-      // Create a new tbody element
-      var newTbody = document.createElement("tbody");
-      if (filterValue === "") {
-        displayTable()
-      } else {
+      const newTbody = document.createElement("tbody");
 
-        // Append rows based on filteredData
-        filteredData.forEach(datas => {
-          var row = document.createElement('tr');
-          row.innerHTML = `<td>${datas['NEIGHBORHOOD']}</td>
-                           <td>${datas['BUILDING_CLASS_CATEGORY']}</td>
-                           <td>${datas['ADDRESS']}</td>
-                           <td>${datas['TOTAL_UNITS']}</td>
-                           <td>${datas['LAND_SQUARE_FEET']}</td>
-                           <td>${datas['GROSS_SQUARE_FEET']}</td>
-                           <td>${datas['YEAR_BUILT']}</td>
-                           <td>${datas['SALE_PRICE']}</td>
-                           <td>${datas['SALE_DATE']}</td>`;
-          newTbody.appendChild(row);
-        });
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = Math.min(startIndex + pageSize, data.length);
 
-        // Append the new tbody to the table
-        table.appendChild(newTbody);
-      }
-      array = filteredData
+      data.slice(startIndex, endIndex).forEach((item) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+      <td>${item["NEIGHBORHOOD"]}</td>
+      <td>${item["BUILDING_CLASS_CATEGORY"]}</td>
+      <td>${item["ADDRESS"]}</td>
+      <td>${item["TOTAL_UNITS"]}</td>
+      <td>${item["LAND_SQUARE_FEET"]}</td>
+      <td>${item["GROSS_SQUARE_FEET"]}</td>
+      <td>${item["YEAR_BUILT"]}</td>
+      <td>${item["SALE_PRICE"]}</td>
+      <td>${item["SALE_DATE"]}</td>
+    `;
+        newTbody.appendChild(row);
+      });
 
+      table.appendChild(newTbody);
     }
 
+    function updatePaginationButtons(totalItems) {
+      const indexButtonsContainer = document.querySelector(".index_button");
+
+      while (indexButtonsContainer.firstChild) {
+        indexButtonsContainer.removeChild(indexButtonsContainer.firstChild);
+      }
+
+      const totalPages = Math.ceil(totalItems / pageSize);
+
+      const prevButton = document.createElement("button");
+      prevButton.textContent = "Prev";
+      prevButton.disabled = currentPage === 1;
+      prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          updateTable(filteredData);
+          updatePaginationButtons(filteredData.length);
+        }
+      });
+      indexButtonsContainer.appendChild(prevButton);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const indexButton = document.createElement("button");
+        indexButton.textContent = i;
+        indexButton.disabled = currentPage === i;
+        indexButton.addEventListener("click", () => {
+          currentPage = i;
+          updateTable(filteredData);
+          updatePaginationButtons(filteredData.length);
+        });
+        indexButtonsContainer.appendChild(indexButton);
+      }
+
+      const nextButton = document.createElement("button");
+      nextButton.textContent = "Next";
+      nextButton.disabled = currentPage === totalPages;
+      nextButton.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          updateTable(filteredData);
+          updatePaginationButtons(filteredData.length);
+        }
+      });
+      indexButtonsContainer.appendChild(nextButton);
+
+      const indexButtons = document.querySelectorAll(".index_button button");
+      indexButtons.forEach(function (button) {
+        button.classList.remove("active");
+      });
+
+      const activeButton = document.querySelector(
+        `.index_button button[data-index="${currentPage}"]`
+      );
+      if (activeButton) {
+        activeButton.classList.add("active");
+      }
+    }
 
     // ini juga
     function displayIndexButtons() {
-      preLoadCalculation() // Pastikan fungsi ini didefinisikan jika diperlukan
+      preLoadCalculation(); // Pastikan fungsi ini didefinisikan jika diperlukan
       var indexButtonsContainer = document.querySelector(".index_button");
 
       // Menghapus semua elemen di dalam .index_buttons
@@ -127,7 +204,8 @@ fetch('Data_Team_11.json')
       indexButtonsContainer.appendChild(prevButton);
       prevButton.addEventListener("click", function () {
         // Logika yang ingin dijalankan saat tombol "Prev" diklik
-        prevIndex()
+        console.log("Prev");
+        prevIndex();
         // Tambahkan logika Anda di sini
       });
 
@@ -135,10 +213,10 @@ fetch('Data_Team_11.json')
       for (var i = 1; i <= max_index; i++) {
         var indexButton = document.createElement("button");
         indexButton.textContent = i;
-        indexButton.setAttribute('data-index', i);
+        indexButton.setAttribute("data-index", i);
         indexButton.addEventListener("click", function () {
-          current_index = this.getAttribute('data-index'); // Mengambil nilai indeks dari atribut data-index
-          indexPagination(current_index)
+          current_index = this.getAttribute("data-index"); // Mengambil nilai indeks dari atribut data-index
+          indexPagination(current_index);
           // Lakukan sesuatu dengan nilai indeks, misalnya memanggil fungsi untuk menampilkan data pada indeks tersebut
         });
         indexButtonsContainer.appendChild(indexButton);
@@ -150,41 +228,47 @@ fetch('Data_Team_11.json')
       indexButtonsContainer.appendChild(nextButton);
       nextButton.addEventListener("click", function () {
         // Logika yang ingin dijalankan saat tombol "Prev" diklik
-        nextIndex()
+        nextIndex();
         // Tambahkan logika Anda di sini
       });
-      highlightIndex()
+      highlightIndex();
     }
     function highlightIndex() {
-      start_index = ((current_index - 1) * table_size) + 1
-      end_index = (start_index + table_size) - 1
+      start_index = (current_index - 1) * table_size + 1;
+      end_index = start_index + table_size - 1;
       if (end_index > array_length) {
-        end_index = array_length
+        end_index = array_length;
       }
 
-      document.getElementById('go-to-page-button').addEventListener('click', function() {
-        const pageNumber = parseInt(document.getElementById('page-number').value);
-        if (pageNumber >= 1 && pageNumber <= max_index) {
-          current_index = pageNumber;
-          highlightIndex();
-        } else {
-          alert("Invalid page number. Please enter a number between 1 and 51.");
-        }
-      });      
+      document
+        .getElementById("go-to-page-button")
+        .addEventListener("click", function () {
+          const pageNumber = parseInt(
+            document.getElementById("page-number").value
+          );
+          if (pageNumber >= 1 && pageNumber <= max_index) {
+            current_index = pageNumber;
+            highlightIndex();
+          } else {
+            alert(
+              "Invalid page number. Please enter a number between 1 and 51."
+            );
+          }
+        });
 
-    // Memindahkan displayIndexButtons() ke bagian bawah fetch karena elemen .index_button belum ada saat function ini dipanggil
-    fetch('Data_Team_11.json')
-       .then(response => response.json())
-       .then(data => {
-         // ... your existing code here ...
+      // Memindahkan displayIndexButtons() ke bagian bawah fetch karena elemen .index_button belum ada saat function ini dipanggil
+      // fetch('Data_Team_11.json')
+      //    .then(response => response.json())
+      //    .then(data => {
+      //      // ... your existing code here ...
 
-        // Panggil displayIndexButtons() di sini untuk memastikan elemen .index_button sudah ada
-        displayIndexButtons();
+      //     // Panggil displayIndexButtons() di sini untuk memastikan elemen .index_button sudah ada
+      //     displayIndexButtons();
 
-     })
-    .catch(error => {
-     console.error('Error fetching data:', error);
-    });
+      //  })
+      // .catch(error => {
+      //  console.error('Error fetching data:', error);
+      // });
 
       // Mengupdate teks dalam elemen span dengan kelas pagination_button
       var paginationSpan = document.querySelector(".pagination_button span");
@@ -193,16 +277,17 @@ fetch('Data_Team_11.json')
       // Menghapus kelas 'active' dari semua tombol dengan kelas index_button
       var indexButtons = document.querySelectorAll(".index_button button");
       indexButtons.forEach(function (button) {
-        button.classList.remove('active');
+        button.classList.remove("active");
       });
 
       // Menambahkan kelas 'active' pada tombol dengan atribut index yang sesuai
-      var activeButton = document.querySelector(`.index_button button[index="${current_index}"]`);
+      var activeButton = document.querySelector(
+        `.index_button button[index="${current_index}"]`
+      );
       if (activeButton) {
-        activeButton.classList.add('active');
+        activeButton.classList.add("active");
       }
-      displayTable()
-
+      displayTable();
     }
     function displayTable() {
       // Menghapus elemen tbody yang ada di dalam tabel dengan id data-table
@@ -219,53 +304,51 @@ fetch('Data_Team_11.json')
       var tab_start = start_index - 1;
       var tab_end = end_index;
 
-      data.slice(tab_start, tab_end + 1).forEach(datas => {
-        var row = document.createElement('tr');
+      data.slice(tab_start, tab_end + 1).forEach((datas) => {
+        var row = document.createElement("tr");
         row.innerHTML = `
-      <td>${datas['NEIGHBORHOOD']}</td>
-      <td>${datas['BUILDING_CLASS_CATEGORY']}</td>
-      <td>${datas['ADDRESS']}</td>
-      <td>${datas['TOTAL_UNITS']}</td>
-      <td>${datas['LAND_SQUARE_FEET']}</td>
-      <td>${datas['GROSS_SQUARE_FEET']}</td>
-      <td>${datas['YEAR_BUILT']}</td>
-      <td>${datas['SALE_PRICE']}</td>
-      <td>${datas['SALE_DATE']}</td>
+      <td>${datas["NEIGHBORHOOD"]}</td>
+      <td>${datas["BUILDING_CLASS_CATEGORY"]}</td>
+      <td>${datas["ADDRESS"]}</td>
+      <td>${datas["TOTAL_UNITS"]}</td>
+      <td>${datas["LAND_SQUARE_FEET"]}</td>
+      <td>${datas["GROSS_SQUARE_FEET"]}</td>
+      <td>${datas["YEAR_BUILT"]}</td>
+      <td>${datas["SALE_PRICE"]}</td>
+      <td>${datas["SALE_DATE"]}</td>
     `;
         newTbody.appendChild(row);
       });
 
       // Menambahkan tbody baru ke tabel
       table.appendChild(newTbody);
-
     }
 
     function nextIndex() {
       if (current_index < max_index) {
-        current_index++
-        highlightIndex()
+        current_index++;
+        highlightIndex();
       }
     }
     function prevIndex() {
       if (current_index > 1) {
-        current_index--
-        highlightIndex()
+        current_index--;
+        highlightIndex();
       }
     }
     function indexPagination(index) {
-      current_index = parseInt(index)
-      highlightIndex()
+      current_index = parseInt(index);
+      highlightIndex();
     }
 
-    displayIndexButtons()
+    displayIndexButtons();
 
-    document.getElementById('sort-button').addEventListener('click', sorting);
-    document.getElementById('filter-button').addEventListener('click', filter);
+    document.getElementById("sort-button").addEventListener("click", sorting);
+    document.getElementById("filter-button").addEventListener("click", filter);
+    document.getElementById("reset").addEventListener("click", reload);
     // Inisialisasi tampilan awal (opsional, bisa dipanggil saat halaman dimuat)
     preLoadCalculation();
-
   })
-  .catch(error => {
-    console.error('Error fetching data:', error);
+  .catch((error) => {
+    console.error("Error fetching data:", error);
   });
-
