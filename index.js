@@ -48,7 +48,7 @@ fetch("Data_Team_11.json")
               responsive: true,
               plugins: {
                   legend: {
-                      position: 'top',
+                      position: 'left',
                   },
                   tooltip: {
                       enabled: true
