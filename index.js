@@ -127,6 +127,101 @@ function processData(data) {
     return salesData;
 }
 
+//Linechart
+// Inisialisasi variabel chart yang akan menyimpan referensi ke grafik
+let salesChart;
+
+document.getElementById('yearSelector').addEventListener('change', function() {
+    const selectedYear = this.value;
+    if (selectedYear === '2016') {
+        fetchDataAndDisplay(2016);
+    } else if (selectedYear === '2017') {
+        fetchDataAndDisplay(2017);
+    }
+});
+
+function fetchDataAndDisplay(year) {
+    fetch('Data_Team_11.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (year === 2016) {
+                displayData(data, year);
+            } else if (year === 2017) {
+                displayData(data, year);
+            }
+        })
+        .catch(error => console.error('Error fetching the data:', error));
+}
+
+function displayData(data, year) {
+    const salesData = data.filter(item => {
+        const saleDate = new Date(item.SALE_DATE);
+        return saleDate.getFullYear() === year;
+    }).map(item => ({
+        month: new Date(item.SALE_DATE).toISOString().slice(0, 7), // Get YYYY-MM format
+        salePrice: parseFloat(item.SALE_PRICE)
+    }));
+
+    const salesByMonth = salesData.reduce((acc, curr) => {
+        if (!acc[curr.month]) {
+            acc[curr.month] = 0;
+        }
+        acc[curr.month] += curr.salePrice;
+        return acc;
+    }, {});
+
+    const labels = Object.keys(salesByMonth).sort();
+    const salesPrices = labels.map(label => salesByMonth[label]);
+
+    // Menghapus grafik sebelumnya jika ada
+    if (salesChart) {
+        salesChart.destroy();
+    }
+
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    salesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Total Sales Price',
+                data: salesPrices,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                fill: false,
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Sales Price'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            }
+        }
+    });
+}
 
     // Menampilkan data pada console untuk memastikan data telah diambil dengan benar
     var array = [];
