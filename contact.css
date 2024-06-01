@@ -69,8 +69,6 @@ main {
 }
 
 .card {
-  width: 90px; /* Lebar kartu */
-  height: 90px; /* Tinggi kartu */
   border: 1px solid #f7f7f7;
   background-color: var(--txt-primary);
   color: var(--txt-secondary);
@@ -120,7 +118,7 @@ main {
 .box--footer {
   background-color: var(--bg-primary);
   color: var(--icons-bg-primary);
-  padding: 20px;
+  padding: 27px;
   text-align: center;
   display: flex;
   justify-content: center;
