@@ -69,8 +69,8 @@ main {
 }
 
 .card {
-  width: 100px; /* Lebar kartu */
-  height: 140px; /* Tinggi kartu */
+  width: 90px; /* Lebar kartu */
+  height: 90px; /* Tinggi kartu */
   border: 1px solid #f7f7f7;
   background-color: var(--txt-primary);
   color: var(--txt-secondary);
@@ -84,7 +84,11 @@ main {
 }
 
 .title {
-  font-size: 100%;
+  font-size: 80%;
+}
+
+.box--txt.judul {
+  font-size: 30px;
 }
 
 .icons {
@@ -103,7 +107,7 @@ main {
   padding: 8px;
   cursor: pointer;
   border: none;
-  width: 100%;
+  width: 80%;
 }
 
 .btn:hover {
