@@ -37,12 +37,15 @@ body {
 
 .box--button {
   cursor: pointer;
+  background-color: var(--bg-primary);
+  color: var(--bg-secondary);
+  border-radius: 25px;
 }
 
 .box--button:hover {
-  background-color: var(--bg-primary);
-  color: var(--bg-secondary);
-  border-radius: 10%;
+  background-color: var(--bg-secondary);
+  color: var(--bg-primary);
+  border-radius: 15px 50px;
 }
 
 .box--judul {
