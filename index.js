@@ -48,7 +48,7 @@ fetch("Data_Team_11.json")
               responsive: true,
               plugins: {
                   legend: {
-                      position: '',
+                      position: 'left',
                   },
                   tooltip: {
                       enabled: true
@@ -83,6 +83,7 @@ fetch("Data_Team_11.json")
                 }]
             },
             options: {
+              responsive: true,
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -198,6 +199,7 @@ function displayData(data, year) {
             }]
         },
         options: {
+          responsive: true,
             scales: {
                 x: {
                     title: {
@@ -278,6 +280,7 @@ function displayUnitsData(data, year) {
           }]
       },
       options: {
+        responsive: true,
           scales: {
               x: {
                   title: {
