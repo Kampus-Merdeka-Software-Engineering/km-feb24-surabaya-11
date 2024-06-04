@@ -45,7 +45,7 @@ body {
 }
 
 .box--judul {
-  color: #fff;
+  color: var(--txt-primary);
   text-decoration: none;
 }
 
@@ -69,7 +69,7 @@ main {
 }
 
 .card {
-  border: 1px solid #f7f7f7;
+  border: 1px solid var(--icons-bg-secondary);
   background-color: var(--txt-primary);
   color: var(--txt-secondary);
   padding: 32px;

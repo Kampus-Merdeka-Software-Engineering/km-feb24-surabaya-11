@@ -79,7 +79,7 @@ h2 {
   font-size: larger;
 }
 
-.no-change {
+.box--no-change {
   font-size: 30px; /* Atur ukuran sesuai keinginan atau gunakan 'initial' untuk ukuran default */
 }
 
@@ -130,17 +130,17 @@ section {
     grid-template-columns: 1fr;
   }
 
-  header {
+  .box--header {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  nav ul {
+  .box--navigasi {
     flex-direction: column;
     align-items: center;
   }
 
-  nav ul li {
+  .box--menu {
     margin: 10px 0;
   }
 }
