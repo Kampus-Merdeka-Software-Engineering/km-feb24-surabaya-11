@@ -260,6 +260,106 @@ function displayData(data, year) {
         }
     });
 }
+// Inisialisasi variabel chart yang akan menyimpan referensi ke grafik
+let unitsChart;
+
+document.getElementById('yearSelectorUnits').addEventListener('change', function() {
+  const selectedYear = this.value;
+  if (selectedYear) {
+      fetchDataAndDisplayUnits(parseInt(selectedYear));
+  }
+});
+
+function fetchDataAndDisplayUnits(year) {
+  fetch('Data_Team_11.json')
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+      })
+      .then(data => {
+          displayUnitsData(data, year);
+      })
+      .catch(error => console.error('Error fetching the data:', error));
+}
+
+function displayUnitsData(data, year) {
+  const filteredData = data.filter(item => {
+      const saleDate = new Date(item.SALE_DATE);
+      return saleDate.getFullYear() === year;
+  });
+
+  const unitsByMonth = processUnitData(filteredData);
+
+  const labels = Object.keys(unitsByMonth).sort();
+  const totalUnits = labels.map(label => unitsByMonth[label]);
+
+  // Menghapus grafik sebelumnya jika ada
+  if (unitsChart) {
+      unitsChart.destroy();
+  }
+
+  const ctx = document.getElementById('totalUnitsChart').getContext('2d');
+  unitsChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+          labels: labels,
+          datasets: [{
+              label: 'Total Units Sold',
+              data: totalUnits,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+              fill: false,
+              tension: 0.1
+          }]
+      },
+      options: {
+        responsive: true,
+          scales: {
+              x: {
+                  title: {
+                      display: true,
+                      text: 'Month'
+                  }
+              },
+              y: {
+                  beginAtZero: true,
+                  title: {
+                      display: true,
+                      text: 'Units Sold'
+                  }
+              }
+          },
+          plugins: {
+              legend: {
+                  display: true,
+                  position: 'top'
+              }
+          }
+      }
+  });
+}
+
+function processUnitData(data) {
+  const unitsData = {};
+
+  // Loop through each data entry
+  data.forEach(entry => {
+      const saleDate = new Date(entry.SALE_DATE);
+      const month = saleDate.toISOString().slice(0, 7); // Get YYYY-MM format
+
+      // Add unit count to the corresponding month
+      if (unitsData[month]) {
+          unitsData[month] += 1;
+      } else {
+          unitsData[month] = 1;
+      }
+  });
+
+  return unitsData;
+}
+
 
     // Menampilkan data pada console untuk memastikan data telah diambil dengan benar
     var array = [];
