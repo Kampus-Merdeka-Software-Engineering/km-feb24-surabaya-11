@@ -1,61 +1,78 @@
 // Mengambil data dari file JSON
-fetch("Data_Team_11.json")
-  .then((response) => response.json())
-  .then((data) => {
+fetch('Data_Team_11.json')
+    .then((response) => response.json())
+    .then((data) => {
 
-      // Tambahkan kode ini untuk membuat pie chart
-      const categories = {};
-            
-      data.forEach(item => {
-          const category = item['BUILDING_CLASS_CATEGORY']; // Adjust the key based on your JSON structure
-          if (categories[category]) {
-              categories[category]++;
-          } else {
-              categories[category] = 1;
-          }
-      });
-      
-      const labels = Object.keys(categories);
-      const values = Object.values(categories);
-      
-      const ctx = document.getElementById('myPieChart').getContext('2d');
-      const myPieChart = new Chart(ctx, {
-          type: 'pie',
-          data: {
-              labels: labels,
-              datasets: [{
-                  data: values,
-                  backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)',
-                      'rgba(75, 192, 192, 0.2)',
-                      'rgba(153, 102, 255, 0.2)',
-                      'rgba(255, 159, 64, 0.2)'
-                  ],
-                  borderColor: [
-                      'rgba(255, 99, 132, 1)',
-                      'rgba(54, 162, 235, 1)',
-                      'rgba(255, 206, 86, 1)',
-                      'rgba(75, 192, 192, 1)',
-                      'rgba(153, 102, 255, 1)',
-                      'rgba(255, 159, 64, 1)'
-                  ],
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              responsive: true,
-              plugins: {
-                  legend: {
-                      position: 'left',
-                  },
-                  tooltip: {
-                      enabled: true
-                  }
-              }
-          }
-      });
+
+      // Tambahkan kode ini untuk membuat pie chart dengan hanya menampilkan 5 boroughs
+{
+  fetch('Data_awal_11.json')
+    .then((response) => response.json())
+    .then((data) => {
+      const boroughs = {
+        1: 'Manhattan',
+        2: 'Bronx',
+        3: 'Brooklyn',
+        4: 'Queens',
+        5: 'Staten Island'
+    };
+
+    const boroughCounts = {
+        'Manhattan': 0,
+        'Bronx': 0,
+        'Brooklyn': 0,
+        'Queens': 0,
+        'Staten Island': 0
+    };
+    
+    data.forEach(item => {
+        const boroughCode = item['BOROUGH']; // Adjust the key based on your JSON structure
+        const boroughName = boroughs[boroughCode];
+        if (boroughName) {
+            boroughCounts[boroughName]++;
+        }
+    });
+    
+    const labels = Object.keys(boroughCounts);
+    const values = Object.values(boroughCounts);
+    
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+    const myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'left',
+                },
+                tooltip: {
+                    enabled: true
+                }
+            }
+        }
+    });
+  })}
 
       
   fetch('Data_Team_11.json')
