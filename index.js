@@ -1,150 +1,149 @@
 // Mengambil data dari file JSON
-fetch('Data_Team_11.json')
-    .then((response) => response.json())
-    .then((data) => {
+fetch("Data_Team_11.json")
+  .then((response) => response.json())
+  .then((data) => {
 
-
-      // Tambahkan kode ini untuk membuat pie chart dengan hanya menampilkan 5 boroughs
-{
-  fetch('Data_awal_11.json')
-    .then((response) => response.json())
-    .then((data) => {
-      const boroughs = {
-        1: 'Manhattan',
-        2: 'Bronx',
-        3: 'Brooklyn',
-        4: 'Queens',
-        5: 'Staten Island'
-    };
-
-    const boroughCounts = {
-        'Manhattan': 0,
-        'Bronx': 0,
-        'Brooklyn': 0,
-        'Queens': 0,
-        'Staten Island': 0
-    };
-    
-    data.forEach(item => {
-        const boroughCode = item['BOROUGH']; // Adjust the key based on your JSON structure
-        const boroughName = boroughs[boroughCode];
-        if (boroughName) {
-            boroughCounts[boroughName]++;
-        }
-    });
-    
-    const labels = Object.keys(boroughCounts);
-    const values = Object.values(boroughCounts);
-    
-    const ctx = document.getElementById('myPieChart').getContext('2d');
-    const myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: values,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'left',
-                },
-                tooltip: {
-                    enabled: true
-                }
-            }
-        }
-    });
-  })}
-
+      // Tambahkan kode ini untuk membuat pie chart
+      const categories = {};
+            
+      data.forEach(item => {
+          const category = item['BUILDING_CLASS_CATEGORY']; // Adjust the key based on your JSON structure
+          if (categories[category]) {
+              categories[category]++;
+          } else {
+              categories[category] = 1;
+          }
+      });
       
-  fetch('Data_Team_11.json')
-    .then(response => response.json())
-    .then(data => {
-        // Process data
-        const salesData = processData(data);
-
-        // Extract regions and total selling prices
-        const regions = Object.keys(salesData);
-        const totalPrices = Object.values(salesData);
-
-        // Create bar chart
-        const ctx = document.getElementById('totalSalesChart').getContext('2d');
-        const totalSalesChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: regions,
-                datasets: [{
-                    label: 'Total Selling Price',
-                    data: totalPrices,
-                    backgroundColor: 'rgba( 47, 79, 79, 1 )',
-                    borderColor: 'rgba( 0, 0, 0, 1 )',
-                    borderWidth: 1
-                }]
-            },
-            options: {
+      const labels = Object.keys(categories);
+      const values = Object.values(categories);
+      
+      const ctx = document.getElementById('myPieChart').getContext('2d');
+      const myPieChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+              labels: labels,
+              datasets: [{
+                  data: values,
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
               responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value, index, values) {
-                                return '$' + value.toLocaleString();
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return 'Total Selling Price: $' + context.parsed.y.toLocaleString();
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    })
-    .catch(error => console.error('Error fetching JSON:', error));
+              plugins: {
+                  legend: {
+                      position: 'left',
+                  },
+                  tooltip: {
+                      enabled: true
+                  }
+              }
+          }
+      });
 
-// Function to process JSON data and calculate total selling price by region
+      // Mengambil data dari file JSON
+fetch("Data_Team_11.json")
+.then((response) => response.json())
+.then((data) => {
+
+  // Proses data untuk bar chart
+  const salesData = processData(data);
+
+  // Extract regions and total units
+  const regions = Object.keys(salesData);
+  const totalUnits = Object.values(salesData);
+
+  // Generate an array of colors for the bars
+  const colors = regions.map((_, index) => `hsl(${index * 30 % 360}, 70%, 50%)`);
+
+  // Create bar chart
+  const ctxBar = document.getElementById('totalSalesChart').getContext('2d');
+  const totalSalesChart = new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+          labels: regions,
+          datasets: [{
+              label: 'Total Units',
+              data: totalUnits,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  ticks: {
+                      callback: function(value, index, values) {
+                          return value.toLocaleString();
+                      }
+                  }
+              }
+          },
+          plugins: {
+              tooltip: {
+                  callbacks: {
+                      label: function(context) {
+                          return 'Total Units: ' + context.parsed.y.toLocaleString();
+                      }
+                  }
+              }
+          }
+      }
+  });
+})
+.catch(error => console.error('Error fetching JSON:', error));
+
+// Function to process JSON data and calculate total units by region
 function processData(data) {
-    const salesData = {};
+const unitsData = {};
 
-    // Loop through each data entry
-    data.forEach(entry => {
-        const region = entry.NEIGHBORHOOD;
-        const salePrice = parseInt(entry.SALE_PRICE);
+// Loop through each data entry
+data.forEach(entry => {
+    const region = entry.NEIGHBORHOOD;
+    const units = parseInt(entry.TOTAL_UNITS); // Adjust the key based on your JSON structure
 
-        // Add sale price to the corresponding region
-        if (salesData[region]) {
-            salesData[region] += salePrice;
-        } else {
-            salesData[region] = salePrice;
-        }
-    });
+    // Add units to the corresponding region
+    if (unitsData[region]) {
+        unitsData[region] += units;
+    } else {
+        unitsData[region] = units;
+    }
+});
 
-    return salesData;
+return unitsData;
 }
-
 //Linechart
 // Inisialisasi variabel chart yang akan menyimpan referensi ke grafik
 let salesChart;
@@ -216,7 +215,6 @@ function displayData(data, year) {
             }]
         },
         options: {
-          responsive: true,
             scales: {
                 x: {
                     title: {
@@ -240,106 +238,6 @@ function displayData(data, year) {
             }
         }
     });
-}
-
-// Inisialisasi variabel chart yang akan menyimpan referensi ke grafik
-let unitsChart;
-
-document.getElementById('yearSelectorUnits').addEventListener('change', function() {
-  const selectedYear = this.value;
-  if (selectedYear) {
-      fetchDataAndDisplayUnits(parseInt(selectedYear));
-  }
-});
-
-function fetchDataAndDisplayUnits(year) {
-  fetch('Data_Team_11.json')
-      .then(response => {
-          if (!response.ok) {
-              throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.json();
-      })
-      .then(data => {
-          displayUnitsData(data, year);
-      })
-      .catch(error => console.error('Error fetching the data:', error));
-}
-
-function displayUnitsData(data, year) {
-  const filteredData = data.filter(item => {
-      const saleDate = new Date(item.SALE_DATE);
-      return saleDate.getFullYear() === year;
-  });
-
-  const unitsByMonth = processUnitData(filteredData);
-
-  const labels = Object.keys(unitsByMonth).sort();
-  const totalUnits = labels.map(label => unitsByMonth[label]);
-
-  // Menghapus grafik sebelumnya jika ada
-  if (unitsChart) {
-      unitsChart.destroy();
-  }
-
-  const ctx = document.getElementById('totalUnitsChart').getContext('2d');
-  unitsChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-          labels: labels,
-          datasets: [{
-              label: 'Total Units Sold',
-              data: totalUnits,
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1,
-              fill: false,
-              tension: 0.1
-          }]
-      },
-      options: {
-        responsive: true,
-          scales: {
-              x: {
-                  title: {
-                      display: true,
-                      text: 'Month'
-                  }
-              },
-              y: {
-                  beginAtZero: true,
-                  title: {
-                      display: true,
-                      text: 'Units Sold'
-                  }
-              }
-          },
-          plugins: {
-              legend: {
-                  display: true,
-                  position: 'top'
-              }
-          }
-      }
-  });
-}
-
-function processUnitData(data) {
-  const unitsData = {};
-
-  // Loop through each data entry
-  data.forEach(entry => {
-      const saleDate = new Date(entry.SALE_DATE);
-      const month = saleDate.toISOString().slice(0, 7); // Get YYYY-MM format
-
-      // Add unit count to the corresponding month
-      if (unitsData[month]) {
-          unitsData[month] += 1;
-      } else {
-          unitsData[month] = 1;
-      }
-  });
-
-  return unitsData;
 }
 
     // Menampilkan data pada console untuk memastikan data telah diambil dengan benar
