@@ -4,9 +4,8 @@ fetch('Data_Team_11.json')
     .then((data) => {
 
 
-      // Tambahkan kode ini untuk membuat pie chart dengan hanya menampilkan 5 boroughs
-{
-  fetch('Data_awal_11.json')
+      // Pie chart dengan hanya menampilkan 5 boroughs (datanya beda sendiri)
+{ fetch('Data_awal_11.json')
     .then((response) => response.json())
     .then((data) => {
       const boroughs = {
