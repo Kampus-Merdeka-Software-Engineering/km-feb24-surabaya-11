@@ -173,6 +173,96 @@ return unitsData;
 // posisi line chart
 
 //pie chart building class category
+document.addEventListener('DOMContentLoaded', function() {
+  const neighborhoodSelector = document.getElementById('neighborhoodSelector');
+  neighborhoodSelector.addEventListener('change', fetchDataAndDisplay);
+  fetchDataAndDisplay();
+});
+
+let myChart;
+
+function fetchDataAndDisplay() {
+  const selectedNeighborhood = document.getElementById('neighborhoodSelector').value;
+  fetch('Data_Team_11.json')
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok ' + response.statusText);
+          }
+          return response.json();
+      })
+      .then(data => {
+          let filteredData;
+          if (selectedNeighborhood === 'ALL NEIGHBORHOOD') {
+              filteredData = data; // Ambil semua data tanpa filter
+          } else {
+              filteredData = data.filter(item => item.NEIGHBORHOOD === selectedNeighborhood);
+          }
+
+          const buildingClassCategories = {};
+          filteredData.forEach(item => {
+              const buildingClassCategory = item.BUILDING_CLASS_CATEGORY;
+              if (buildingClassCategories[buildingClassCategory]) {
+                  buildingClassCategories[buildingClassCategory] += parseInt(item.TOTAL_UNITS);
+              } else {
+                  buildingClassCategories[buildingClassCategory] = parseInt(item.TOTAL_UNITS);
+              }
+          });
+
+          const labels = Object.keys(buildingClassCategories);
+          const dataValues = Object.values(buildingClassCategories);
+
+          // Hapus grafik sebelumnya jika sudah ada
+          if (myChart) {
+              myChart.destroy();
+          }
+
+          displayPieChart(labels, dataValues);
+      })
+      .catch(error => console.error('Error fetching the data:', error));
+}
+
+function displayPieChart(labels, dataValues) {
+  const ctx = document.getElementById('buildingChart').getContext('2d');
+  myChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+          labels: labels,
+          datasets: [{
+              data: dataValues,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          plugins: {
+              legend: {
+                  display: false // Hide legend
+              },
+              tooltips: {
+                  enabled: false // Disable tooltips
+              }
+          }
+      }
+  });
+}
+
+
+
 
     // Menampilkan data pada console untuk memastikan data telah diambil dengan benar
     var array = [];
