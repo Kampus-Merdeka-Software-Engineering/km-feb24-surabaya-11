@@ -120,6 +120,13 @@ fetch('Data_Team_11.json')
       },
       options: {
           scales: {
+            x: {
+                ticks: {
+                    font: {
+                        size: 8 // Ukuran font yang lebih kecil
+                    }
+                }
+            },
               y: {
                   beginAtZero: true,
                   ticks: {
