@@ -112,14 +112,8 @@
         <h2><i class="fa-solid fa-chart-line"></i> Line Chart</h2>
         <article>
           <h1>Total Units Sales per Quarter</h1>
-          <select id="yearSelector">
-            <option value="" selected disabled>Select Year</option>
-            <option value="2016">2016</option>
-            <option value="2017">2017</option>
           </select>
-          <canvas id="salesChart"></canvas>
-      </div>
-      <script src="script.js"></script>
+          <canvas id="unitsSoldChart"></canvas>
         </article>
       </section>
 
@@ -127,14 +121,8 @@
         <h2><i class="fa-solid fa-chart-line"></i> Line Chart</h2>
         <article>
           <h1>Total Selling Price per Quarter</h1>
-          <select id="yearSelector">
-            <option value="" selected disabled>Select Year</option>
-            <option value="2016">2016</option>
-            <option value="2017">2017</option>
           </select>
-          <canvas id="salesChart"></canvas>
-      </div>
-      <script src="script.js"></script>
+          <canvas id="salePriceChart"></canvas>
         </article>
       </section>
 
@@ -143,22 +131,6 @@
         <h1> Total Units Sales by Region (Bronx) </h1>
         <article>
           <canvas id="totalSalesChart"></canvas>
-<<<<<<< HEAD
-=======
-        </article>
-      </section>
-
-      <section id="chart5">
-        <h2><i class="fa-solid fa-chart-column"></i> Bar Chart</h2>
-        <h1>Total Units Sales by Building Class Category</h1>       
-        <article>
-          <select id="yearSelectorUnits">
-            <option value="" selected disabled>Select Year</option>
-            <option value="2016">2016</option>
-            <option value="2017">2017</option>
-          </select>
-          <canvas id="totalUnitsChart"></canvas>
->>>>>>> 747f5ed14ba758456c10bff68ac7ce03339c5252
         </article>
       </section>
 
@@ -166,11 +138,10 @@
         <h2><i class="fa-solid fa-chart-pie"></i> Pie Chart</h2>
         <h1>Building Class Category By Pie Chart</h1>       
         <article>
-          <div class="filters">
-            <label for="neighborhoodSelector">Select Neighborhood:</label>
-            <select id="neighborhoodSelector">
-                <option value="" selected disabled>Select Neighborhood</option>
-                <option value="ALL NEIGHBORHOOD">ALL NEIGHBORHOOD</option>
+            <div class="filters">
+                <label for="neighborhoodSelector">Select Neighborhood:</label>
+                <select id="neighborhoodSelector">
+                <option value="ALL NEIGHBORHOOD" selected>ALL NEIGHBORHOOD</option>
                 <option value="CITY ISLAND-PELHAM STRIP">CITY ISLAND-PELHAM STRIP</option>
                 <option value="BRONX PARK">BRONX PARK</option>
                 <option value="EAST RIVER">EAST RIVER</option>
@@ -215,7 +186,6 @@
             <canvas id="buildingChart"></canvas>
         </div>
     </div>
-    <script src="index.js"></script>
       </section>
 
     </main>
