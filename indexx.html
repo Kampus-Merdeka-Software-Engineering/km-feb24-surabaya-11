@@ -22,6 +22,7 @@
   </head>
   <body>
     <header class="box--header">
+      <h2 class="box--no-change">Dashboard NYC Property</h2>
       <h1>Dashboard NYC Property</h1>
       <nav>
         <ul class="box--navigasi">
@@ -39,8 +40,10 @@
 
     <main>
       <section id="dashboard">
+        <h2><i class="fa-solid fa-table"></i> Data Table</h2>
         <h2>
-          Penjualan Unit Bangunan di Pasar Properti New York Wilayah Bronx
+          Building Unit Sales in the New York Property Market in the Bronx
+          Region
         </h2>
         <article>
           <h3>Tabel Data</h3>
@@ -101,19 +104,20 @@
 
       <section id="chart1">
         <h2><i class="fa-solid fa-chart-pie"></i> Pie Chart</h2>
+        <h1>Total Unit Sales by Building Class Category</h1>
         <article>
           <canvas id="myPieChart"></canvas>
         </article>
       </section>
 
       <section id="chart2">
-        <h2>Line Chart</h2>
+        <h2><i class="fa-solid fa-chart-line"></i> Line Chart</h2>
         <article>
           <h1>Monthly Sales Chart</h1>
           <select id="yearSelector">
-              <option value="" selected disabled>Select Year</option>
-              <option value="2016">2016</option>
-              <option value="2017">2017</option>
+            <option value="" selected disabled>Select Year</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
           </select>
           <canvas id="salesChart"></canvas>
       </div>
@@ -130,10 +134,16 @@
       </section>
 
       <section id="chart4">
-        <h2><i class="fa-solid fa-chart-column"></i> Bar Chart</h2>
-        <h1> Total Units per Building Category (Bronx) </h1>
+        <h2><i class="fa-solid fa-chart-line"></i> Line Chart</h2>
+        <h1>Total Unit Sales by Monthly Chart</h1>
+        
         <article>
-          <canvas id="Chart"></canvas>
+          <select id="yearSelectorUnits">
+            <option value="" selected disabled>Select Year</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+          </select>
+          <canvas id="totalUnitsChart"></canvas>
         </article>
       </section>
 
