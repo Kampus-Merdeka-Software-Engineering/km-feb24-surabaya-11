@@ -19,10 +19,11 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <header class="box--header">
-      <h1>Dashboard NYC Property</h1>
+      <h2 class="box--no-change">Dashboard NYC Property</h2>
       <nav>
         <ul class="box--navigasi">
           <li class="box--menu">
@@ -39,12 +40,12 @@
 
     <main>
       <section id="dashboard">
+        <h2><i class="fa-solid fa-table"></i> Data Table</h2>
         <h2>
-          Penjualan Unit Bangunan di Pasar Properti New York Wilayah Bronx
+          Building Unit Sales in the New York Property Market in the Bronx
+          Region
         </h2>
         <article>
-          <h3>Tabel Data</h3>
-
           <div>
             <label for="sort-key">Sort by:</label>
             <select id="sort-key">
@@ -101,19 +102,20 @@
 
       <section id="chart1">
         <h2><i class="fa-solid fa-chart-pie"></i> Pie Chart</h2>
+        <h1>Total Unit Sales by Borough In New York</h1>
         <article>
           <canvas id="myPieChart"></canvas>
         </article>
       </section>
 
       <section id="chart2">
-        <h2>Line Chart</h2>
+        <h2><i class="fa-solid fa-chart-line"></i> Line Chart</h2>
         <article>
-          <h1>Monthly Sales Chart</h1>
+          <h1>Total Units Sales per Quarter</h1>
           <select id="yearSelector">
-              <option value="" selected disabled>Select Year</option>
-              <option value="2016">2016</option>
-              <option value="2017">2017</option>
+            <option value="" selected disabled>Select Year</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
           </select>
           <canvas id="salesChart"></canvas>
       </div>
@@ -122,19 +124,82 @@
       </section>
 
       <section id="chart3">
-        <h2><i class="fa-solid fa-chart-column"></i> Bar Chart</h2>
-        <h1> Total Units per Region (Bronx) </h1>
+        <h2><i class="fa-solid fa-chart-line"></i> Line Chart</h2>
         <article>
-          <canvas id="totalSalesChart"></canvas>
+          <h1>Total Selling Price per Quarter</h1>
+          <select id="yearSelector">
+            <option value="" selected disabled>Select Year</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+          </select>
+          <canvas id="salesChart"></canvas>
+      </div>
+      <script src="script.js"></script>
         </article>
       </section>
 
       <section id="chart4">
         <h2><i class="fa-solid fa-chart-column"></i> Bar Chart</h2>
-        <h1> Total Units per Building Category (Bronx) </h1>
+        <h1> Total Units Sales by Region (Bronx) </h1>
         <article>
-          <canvas id="Chart"></canvas>
+          <canvas id="totalSalesChart"></canvas>
         </article>
+      </section>
+
+      <section id="chart5">
+        <h2><i class="fa-solid fa-chart-pie"></i> Pie Chart</h2>
+        <h1>Building Class Category By Pie Chart</h1>       
+        <article>
+          <div class="filters">
+            <label for="neighborhoodSelector">Select Neighborhood:</label>
+            <select id="neighborhoodSelector">
+                <option value="" selected disabled>Select Neighborhood</option>
+                <option value="ALL NEIGHBORHOOD">ALL NEIGHBORHOOD</option>
+                <option value="CITY ISLAND-PELHAM STRIP">CITY ISLAND-PELHAM STRIP</option>
+                <option value="BRONX PARK">BRONX PARK</option>
+                <option value="EAST RIVER">EAST RIVER</option>
+                <option value="VAN CORTLANDT PARK">VAN CORTLANDT PARK</option>
+                <option value="CO-OP CITY">CO-OP CITY</option>
+                <option value="FIELDSTON">FIELDSTON</option>
+                <option value="CROTONA PARK">CROTONA PARK</option>
+                <option value="BATHGATE">BATHGATE</option>
+                <option value="HUNTS POINT">HUNTS POINT</option>
+                <option value="FORDHAM">FORDHAM</option>
+                <option value="PELHAM GARDENS">PELHAM GARDENS</option>
+                <option value="BELMONT">BELMONT</option>
+                <option value="MOUNT HOPE/MOUNT EDEN">MOUNT HOPE/MOUNT EDEN</option>
+                <option value="WOODLAWN">WOODLAWN</option>
+                <option value="CITY ISLAND">CITY ISLAND</option>
+                <option value="MOTT HAVEN/PORT MORRIS">MOTT HAVEN/PORT MORRIS</option>
+                <option value="KINGSBRIDGE HTS/UNIV HTS">KINGSBRIDGE HTS/UNIV HTS</option>
+                <option value="HIGHBRIDGE/MORRIS HEIGHTS">HIGHBRIDGE/MORRIS HEIGHTS</option>
+                <option value="PELHAM PARKWAY SOUTH">PELHAM PARKWAY SOUTH</option>
+                <option value="PELHAM PARKWAY NORTH">PELHAM PARKWAY NORTH</option>
+                <option value="WESTCHESTER">WESTCHESTER</option>
+                <option value="EAST TREMONT">EAST TREMONT</option>
+                <option value="COUNTRY CLUB">COUNTRY CLUB</option>
+                <option value="CASTLE HILL/UNIONPORT">CASTLE HILL/UNIONPORT</option>
+                <option value="BEDFORD PARK/NORWOOD">BEDFORD PARK/NORWOOD</option>
+                <option value="KINGSBRIDGE/JEROME PARK">KINGSBRIDGE/JEROME PARK</option>
+                <option value="WAKEFIELD">WAKEFIELD</option>
+                <option value="MELROSE/CONCOURSE">MELROSE/CONCOURSE</option>
+                <option value="SCHUYLERVILLE/PELHAM BAY">SCHUYLERVILLE/PELHAM BAY</option>
+                <option value="MORRIS PARK/VAN NEST">MORRIS PARK/VAN NEST</option>
+                <option value="BRONXDALE">BRONXDALE</option>
+                <option value="MORRISANIA/LONGWOOD">MORRISANIA/LONGWOOD</option>
+                <option value="THROGS NECK">THROGS NECK</option>
+                <option value="BAYCHESTER">BAYCHESTER</option>
+                <option value="PARKCHESTER">PARKCHESTER</option>
+                <option value="WILLIAMSBRIDGE">WILLIAMSBRIDGE</option>
+                <option value="SOUNDVIEW">SOUNDVIEW</option>
+                <option value="RIVERDALE">RIVERDALE</option>
+            </select>
+        </div>
+        <div class="chart-container">
+            <canvas id="buildingChart"></canvas>
+        </div>
+    </div>
+    <script src="index.js"></script>
       </section>
 
     </main>

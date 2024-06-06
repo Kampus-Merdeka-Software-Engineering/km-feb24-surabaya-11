@@ -61,15 +61,42 @@ body {
 
 main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto auto auto;
-  gap: 20px;
-  padding: 20px;
+  gap: 10px;
+  padding: 5px;
   grid-template-areas:
-    "chart1 chart2"
-    "chart3 chart4"
-    "dashboard dashboard";
+    "chart1 chart2 chart3"
+    "chart4 chart4 chart5"
+    "dashboard dashboard dashboard";
 }
+
+/* Menggunakan ID untuk merujuk elemen */
+#chart1 {
+  grid-area: chart1;
+}
+
+#chart2 {
+  grid-area: chart2;
+}
+
+#chart3 {
+  grid-area: chart3;
+}
+
+#chart4 {
+  grid-area: chart4;
+}
+
+#chart5 {
+  grid-area: chart5;
+}
+
+#dashboard {
+  grid-area: dashboard;
+}
+
+
 
 h1 {
   font-size: large;
@@ -81,24 +108,6 @@ h2 {
 
 .box--no-change {
   font-size: 30px; /* Atur ukuran sesuai keinginan atau gunakan 'initial' untuk ukuran default */
-}
-
-/* Menggunakan ID untuk merujuk elemen */
-#chart1 {
-  grid-area: chart1;
-}
-
-#chart2 {
-  grid-area: chart2;
-}
-#chart3 {
-  grid-area: chart3;
-}
-#chart4 {
-  grid-area: chart4;
-}
-#dashboard {
-  grid-area: dashboard;
 }
 
 .box {
