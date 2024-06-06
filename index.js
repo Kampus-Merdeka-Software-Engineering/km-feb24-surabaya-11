@@ -74,75 +74,95 @@ fetch('Data_Team_11.json')
   })}
 
       
-  fetch('Data_Team_11.json')
-    .then(response => response.json())
-    .then(data => {
-        // Process data
-        const salesData = processData(data);
+  // Mengambil data dari file JSON
+fetch('Data_Team_11.json')
+.then((response) => response.json())
+.then((data) => {
 
-        // Extract regions and total selling prices
-        const regions = Object.keys(salesData);
-        const totalPrices = Object.values(salesData);
 
-        // Create bar chart
-        const ctx = document.getElementById('totalSalesChart').getContext('2d');
-        const totalSalesChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: regions,
-                datasets: [{
-                    label: 'Total Selling Price',
-                    data: totalPrices,
-                    backgroundColor: 'rgba( 47, 79, 79, 1 )',
-                    borderColor: 'rgba( 0, 0, 0, 1 )',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-              responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value, index, values) {
-                                return '$' + value.toLocaleString();
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return 'Total Selling Price: $' + context.parsed.y.toLocaleString();
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    })
-    .catch(error => console.error('Error fetching JSON:', error));
+  // Proses data untuk bar chart
+  const salesData = processData(data);
 
-// Function to process JSON data and calculate total selling price by region
+  // Extract regions and total units
+  const regions = Object.keys(salesData);
+  const totalUnits = Object.values(salesData);
+
+  // Generate an array of colors for the bars
+  const colors = regions.map((_, index) => `hsl(${index * 30 % 360}, 70%, 50%)`);
+
+  // Create bar chart
+  const ctxBar = document.getElementById('totalSalesChart').getContext('2d');
+  const totalSalesChart = new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+          labels: regions,
+          datasets: [{
+              label: 'Total Units',
+              data: totalUnits,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  ticks: {
+                      callback: function(value, index, values) {
+                          return value.toLocaleString();
+                      }
+                  }
+              }
+          },
+          plugins: {
+              tooltip: {
+                  callbacks: {
+                      label: function(context) {
+                          return 'Total Units: ' + context.parsed.y.toLocaleString();
+                      }
+                  }
+              }
+          }
+      }
+  });
+})
+.catch(error => console.error('Error fetching JSON:', error));
+
+// Function to process JSON data and calculate total units by region
 function processData(data) {
-    const salesData = {};
+const unitsData = {};
 
-    // Loop through each data entry
-    data.forEach(entry => {
-        const region = entry.NEIGHBORHOOD;
-        const salePrice = parseInt(entry.SALE_PRICE);
+// Loop through each data entry
+data.forEach(entry => {
+    const region = entry.NEIGHBORHOOD;
+    const units = parseInt(entry.TOTAL_UNITS); // Adjust the key based on your JSON structure
 
-        // Add sale price to the corresponding region
-        if (salesData[region]) {
-            salesData[region] += salePrice;
-        } else {
-            salesData[region] = salePrice;
-        }
-    });
+    // Add units to the corresponding region
+    if (unitsData[region]) {
+        unitsData[region] += units;
+    } else {
+        unitsData[region] = units;
+    }
+});
 
-    return salesData;
+return unitsData;
 }
+
 
 //Linechart
 // Inisialisasi variabel chart yang akan menyimpan referensi ke grafik
@@ -215,7 +235,6 @@ function displayData(data, year) {
             }]
         },
         options: {
-          responsive: true,
             scales: {
                 x: {
                     title: {
@@ -240,7 +259,6 @@ function displayData(data, year) {
         }
     });
 }
-
 // Inisialisasi variabel chart yang akan menyimpan referensi ke grafik
 let unitsChart;
 
@@ -340,6 +358,7 @@ function processUnitData(data) {
 
   return unitsData;
 }
+
 
     // Menampilkan data pada console untuk memastikan data telah diambil dengan benar
     var array = [];
