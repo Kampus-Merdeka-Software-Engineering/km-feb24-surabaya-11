@@ -251,10 +251,10 @@ function displayPieChart(labels, dataValues) {
       options: {
           plugins: {
               legend: {
-                  display: false // Hide legend
+                  display: false // Sembunyikan legenda
               },
               tooltips: {
-                  enabled: false // Disable tooltips
+                  enabled: false // Nonaktifkan tooltip
               }
           }
       }
@@ -276,6 +276,7 @@ function displayPieChart(labels, dataValues) {
     function reload() {
       location.reload();
     }
+    
     // Tambahan
     function preLoadCalculation() {
       array = data;
