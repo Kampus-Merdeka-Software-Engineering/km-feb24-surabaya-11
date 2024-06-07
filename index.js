@@ -247,126 +247,123 @@ return unitsData;
 }
 
 //chart 5
-// Menunggu hingga seluruh dokumen HTML dimuat
 document.addEventListener('DOMContentLoaded', function() {
-  // Mendapatkan elemen neighborhoodSelector dari dokumen
+  populateNeighborhoodSelector();
   const neighborhoodSelector = document.getElementById('neighborhoodSelector');
-  // Menambahkan event listener untuk perubahan pada elemen neighborhoodSelector
   neighborhoodSelector.addEventListener('change', fetchDataAndDisplay);
-  // Memanggil fungsi fetchDataAndDisplay saat halaman pertama kali dimuat untuk menampilkan grafik
-  fetchDataAndDisplay();
+  fetchDataAndDisplay(); // Tampilkan chart saat halaman pertama kali dimuat
 });
-
 
 let myChart;
 
-// Fungsi untuk mengambil data dan menampilkannya
-function fetchDataAndDisplay() {
-  // Mendapatkan nilai dari elemen select dengan id 'neighborhoodSelector'
-  const selectedNeighborhood = document.getElementById('neighborhoodSelector').value;
-
-  // Melakukan fetch data dari file JSON
+function populateNeighborhoodSelector() {
   fetch('Data_Team_11.json')
     .then(response => {
-      // Memeriksa apakah respon dari jaringan oke (status 200)
       if (!response.ok) {
-        // Melempar error jika respon tidak oke
         throw new Error('Network response was not ok ' + response.statusText);
       }
-      // Mengembalikan data dalam format JSON
+      return response.json();
+    })
+    .then(data => {
+      const neighborhoods = new Set(data.map(item => item.NEIGHBORHOOD));
+      const neighborhoodSelector = document.getElementById('neighborhoodSelector');
+
+      const allOption = document.createElement('option');
+      allOption.value = 'ALL NEIGHBORHOOD';
+      allOption.textContent = 'ALL NEIGHBORHOOD';
+      neighborhoodSelector.appendChild(allOption);
+
+      neighborhoods.forEach(neighborhood => {
+        const option = document.createElement('option');
+        option.value = neighborhood;
+        option.textContent = neighborhood;
+        neighborhoodSelector.appendChild(option);
+      });
+    })
+    .catch(error => console.error('Error fetching the data:', error));
+}
+
+function fetchDataAndDisplay() {
+  const selectedNeighborhood = document.getElementById('neighborhoodSelector').value;
+  fetch('Data_Team_11.json')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
       return response.json();
     })
     .then(data => {
       let filteredData;
-      // Memeriksa apakah neighborhood yang dipilih adalah 'ALL NEIGHBORHOOD'
       if (selectedNeighborhood === 'ALL NEIGHBORHOOD') {
-        // Mengambil semua data tanpa filter
-        filteredData = data;
+        filteredData = data; // Ambil semua data tanpa filter
       } else {
-        // Filter data berdasarkan neighborhood yang dipilih
         filteredData = data.filter(item => item.NEIGHBORHOOD === selectedNeighborhood);
       }
-      // Menampilkan data yang telah difilter di konsol
       console.log('Filtered Data:', filteredData);
 
-      // Membuat objek untuk menyimpan kategori kelas bangunan
       const buildingClassCategories = {};
-      // Loop melalui data yang telah difilter
       filteredData.forEach(item => {
         const buildingClassCategory = item.BUILDING_CLASS_CATEGORY;
-        // Jika kategori kelas bangunan sudah ada di objek, tambahkan total unitnya
         if (buildingClassCategories[buildingClassCategory]) {
           buildingClassCategories[buildingClassCategory] += parseInt(item.TOTAL_UNITS);
         } else {
-          // Jika belum ada, tambahkan kategori kelas bangunan ke objek dengan total unitnya
           buildingClassCategories[buildingClassCategory] = parseInt(item.TOTAL_UNITS);
         }
       });
 
-          // Mendapatkan array label dari kategori kelas bangunan
-          const labels = Object.keys(buildingClassCategories);
-          // Mendapatkan array nilai data dari kategori kelas bangunan
-          const dataValues = Object.values(buildingClassCategories);
+      const labels = Object.keys(buildingClassCategories);
+      const dataValues = Object.values(buildingClassCategories);
 
-          // Hapus grafik sebelumnya jika sudah ada
-          if (myChart) {
-              myChart.destroy();
-          }
-
-          displayPieChart(labels, dataValues);
-      })
-      .catch(error => console.error('Error fetching the data:', error));
-}
-// Fungsi untuk menampilkan diagram lingkaran (pie chart)
-function displayPieChart(labels, dataValues) {
-  // Dapatkan konteks grafik dari elemen canvas dengan ID 'buildingChart'
-  const ctx = document.getElementById('buildingChart').getContext('2d');
-  
-  // Buat objek Chart baru dengan tipe 'pie' (diagram lingkaran)
-  myChart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-          // Gunakan nilai label yang diberikan sebagai label untuk setiap potongan diagram lingkaran
-          labels: labels,
-          datasets: [{
-              // Gunakan nilai data yang diberikan sebagai nilai untuk setiap potongan diagram lingkaran
-              data: dataValues,
-              // Tetapkan warna latar belakang untuk setiap potongan diagram lingkaran
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              // Tetapkan warna batas untuk setiap potongan diagram lingkaran
-              borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              // Tentukan lebar batas untuk setiap potongan diagram lingkaran
-              borderWidth: 1
-          }]
-      },
-      options: {
-          // Matikan tampilan legenda diagram lingkaran
-          plugins: {
-              legend: {
-                  display: false
-              },
-              // Aktifkan tampilan tooltip saat mengarahkan kursor di atas potongan diagram lingkaran
-              tooltip: {
-                  enabled: true
-              }
-          }
+      // Hapus grafik sebelumnya jika sudah ada
+      if (myChart) {
+        myChart.destroy();
       }
+
+      displayPieChart(labels, dataValues);
+    })
+    .catch(error => console.error('Error fetching the data:', error));
+}
+
+function displayPieChart(labels, dataValues) {
+  const ctx = document.getElementById('buildingChart').getContext('2d');
+  myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: dataValues,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false // Tampilkan legenda
+        },
+        tooltip: {
+          enabled: true // Aktifkan tooltip
+        }
+      }
+    }
   });
 }
+
 
     // Menampilkan data pada console untuk memastikan data telah diambil dengan benar
     fetch('Data_Team_11.json')
