@@ -1,11 +1,5 @@
-// Mengambil data dari file JSON
-fetch('Data_Team_11.json')
-    .then((response) => response.json())
-    .then((data) => {
-
-
-      // Pie chart dengan hanya menampilkan 5 boroughs (datanya beda sendiri)
-{ fetch('Data_awal_11.json')
+// Pie chart dengan hanya menampilkan 5 boroughs (datanya beda sendiri)
+fetch('Data_awal_11.json')
     .then((response) => response.json())
     .then((data) => {
       const boroughs = {
@@ -70,8 +64,8 @@ fetch('Data_Team_11.json')
                 }
             }
         }
-    });
-  })}
+    })
+  });
 
 
 //Chart 2 dan 3 Line Chart
@@ -263,6 +257,7 @@ data.forEach(entry => {
 return unitsData;
 }
 
+//chart 5
 document.addEventListener('DOMContentLoaded', function() {
   const neighborhoodSelector = document.getElementById('neighborhoodSelector');
   neighborhoodSelector.addEventListener('change', fetchDataAndDisplay);
@@ -287,6 +282,7 @@ function fetchDataAndDisplay() {
           } else {
               filteredData = data.filter(item => item.NEIGHBORHOOD === selectedNeighborhood);
           }
+          console.log('Filtered Data:', filteredData);
 
           const buildingClassCategories = {};
           filteredData.forEach(item => {
@@ -341,7 +337,7 @@ function displayPieChart(labels, dataValues) {
       options: {
           plugins: {
               legend: {
-                  display: true // Tampilkan legenda
+                  display: false // Tampilkan legenda
               },
               tooltip: {
                   enabled: true // Aktifkan tooltip
@@ -352,6 +348,14 @@ function displayPieChart(labels, dataValues) {
 }
 
     // Menampilkan data pada console untuk memastikan data telah diambil dengan benar
+    fetch('Data_Team_11.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
     var array = [];
     var array_length = 0;
     var table_size = 100;
@@ -607,20 +611,6 @@ function displayPieChart(labels, dataValues) {
           }
         });
 
-      // Memindahkan displayIndexButtons() ke bagian bawah fetch karena elemen .index_button belum ada saat function ini dipanggil
-      // fetch('Data_Team_11.json')
-      //    .then(response => response.json())
-      //    .then(data => {
-      //      // ... your existing code here ...
-
-      //     // Panggil displayIndexButtons() di sini untuk memastikan elemen .index_button sudah ada
-      //     displayIndexButtons();
-
-      //  })
-      // .catch(error => {
-      //  console.error('Error fetching data:', error);
-      // });
-
       // Mengupdate teks dalam elemen span dengan kelas pagination_button
       var paginationSpan = document.querySelector(".pagination_button span");
       paginationSpan.textContent = `Showing ${start_index} to ${end_index} of ${array_length} entries`;
@@ -700,6 +690,5 @@ function displayPieChart(labels, dataValues) {
     // Inisialisasi tampilan awal (opsional, bisa dipanggil saat halaman dimuat)
     preLoadCalculation();
   })
-  .catch((error) => {
-    console.error("Error fetching data:", error);
-  });
+  .catch(error => console.error('Error fetching the data:', error));
+
