@@ -50,96 +50,94 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 //Chart 2 dan 3 Line Chart
-// Function to get quarter based on month
-function getQuarter(month) {
-  if (month >= 5 && month <= 8) {
-      return 'Q3';
-  } else if (month >= 1 && month <= 4) {
-      return 'Q2';
-  } else if (month >= 9 && month <= 12) {
-      return 'Q1';
-  } else {
-      return 'Invalid';
-  }
+// Function to format month-year key
+function getMonthYear(dateStr) {
+  const date = new Date(dateStr);
+  const options = { year: 'numeric', month: 'short' };
+  return date.toLocaleDateString('en-US', options);
 }
 
 // Read data from JSON file
 fetch('Data_Team_11.json')
-  .then(response => response.json())
-  .then(data => {
-      // Initialize objects to store sales data per quarter
-      const unitsSoldByQuarter = {'Q1': 0, 'Q2': 0, 'Q3': 0};
-      const salePriceByQuarter = {'Q1': 0, 'Q2': 0, 'Q3': 0};
+.then(response => response.json())
+.then(data => {
+    // Initialize objects to store sales data per month
+    const unitsSoldByMonth = {};
+    const salePriceByMonth = {};
 
-      // Convert sale dates to quarters and calculate total sales per quarter
-      data.forEach(sale => {
-          const saleMonth = new Date(sale.SALE_DATE).getMonth() + 1;
-          const quarter = getQuarter(saleMonth);
-          unitsSoldByQuarter[quarter] += parseInt(sale.TOTAL_UNITS);
-          salePriceByQuarter[quarter] += parseInt(sale.SALE_PRICE);
-      });
+    // Convert sale dates to month-year format and calculate total sales per month
+    data.forEach(sale => {
+        const saleDate = getMonthYear(sale.SALE_DATE);
+        if (!unitsSoldByMonth[saleDate]) {
+            unitsSoldByMonth[saleDate] = 0;
+            salePriceByMonth[saleDate] = 0;
+        }
+        unitsSoldByMonth[saleDate] += parseFloat(sale.TOTAL_UNITS);
+        salePriceByMonth[saleDate] += parseFloat(sale.SALE_PRICE);
+    });
 
-      // Ensure all quarters are represented in the data, even if no sales occurred
-      ['Q1', 'Q2', 'Q3'].forEach(quarter => {
-          if (!(quarter in unitsSoldByQuarter)) {
-              unitsSoldByQuarter[quarter] = 0;
-          }
-          if (!(quarter in salePriceByQuarter)) {
-              salePriceByQuarter[quarter] = 0;
-          }
-      });
+    // Ensure all months from September 2016 to August 2017 are represented in the data
+    const months = [];
+    for (let i = 0; i < 12; i++) {
+        const date = new Date(2016, 8 + i); // Starting from September 2016 (month 8)
+        const monthYear = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+        months.push(monthYear);
+        if (!unitsSoldByMonth[monthYear]) {
+            unitsSoldByMonth[monthYear] = 0;
+            salePriceByMonth[monthYear] = 0;
+        }
+    }
 
-      // Extract quarter labels and sales values
-      const quarters = Object.keys(unitsSoldByQuarter);
-      const unitsSold = Object.values(unitsSoldByQuarter);
-      const salePrices = Object.values(salePriceByQuarter);
+    // Extract month labels and sales values
+    const unitsSold = months.map(month => unitsSoldByMonth[month]);
+    const salePrices = months.map(month => salePriceByMonth[month]);
 
-      // Draw line chart for total units sold using Chart.js
-      const unitsSoldCtx = document.getElementById('unitsSoldChart').getContext('2d');
-      const unitsSoldChart = new Chart(unitsSoldCtx, {
-          type: 'line',
-          data: {
-              labels: quarters,
-              datasets: [{
-                  label: 'Total Units Sold',
-                  data: unitsSold,
-                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                  borderColor: 'rgba(54, 162, 235, 1)',
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              scales: {
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-      });
+    // Draw line chart for total units sold using Chart.js
+    const unitsSoldCtx = document.getElementById('unitsSoldChart').getContext('2d');
+    const unitsSoldChart = new Chart(unitsSoldCtx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Total Units Sold',
+                data: unitsSold,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 
-      // Draw line chart for total sale price using Chart.js
-      const salePriceCtx = document.getElementById('salePriceChart').getContext('2d');
-      const salePriceChart = new Chart(salePriceCtx, {
-          type: 'line',
-          data: {
-              labels: quarters,
-              datasets: [{
-                  label: 'Total Sale Price',
-                  data: salePrices,
-                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                  borderColor: 'rgba(255, 99, 132, 1)',
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              scales: {
-                  y: {
-                      beginAtZero: true
-                  }
-              }
-          }
-      });
-  });
+    // Draw line chart for total sale price using Chart.js
+    const salePriceCtx = document.getElementById('salePriceChart').getContext('2d');
+    const salePriceChart = new Chart(salePriceCtx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Total Sale Price',
+                data: salePrices,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
 
 //Chart 4 
   // Mengambil data dari file JSON
