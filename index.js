@@ -1,4 +1,4 @@
-// Pie chart dengan data langsung dimasukkan
+//Piechart dengan data langsung dimasukkan
 document.addEventListener('DOMContentLoaded', (event) => {
   const boroughCounts = {
       'Manhattan': 18102,
@@ -8,46 +8,49 @@ document.addEventListener('DOMContentLoaded', (event) => {
       'Staten Island': 8296
   };
 
+  // Mengambil kunci dan nilai dari boroughCounts dan menyimpannya ke dalam array labels dan values
+  const labels = Object.keys(boroughCounts); // ['Manhattan', 'Bronx', 'Brooklyn', 'Queens', 'Staten Island']
+  const values = Object.values(boroughCounts); // [18102, 6994, 23843, 26548, 8296]
 
-// Mendapatkan konteks dari elemen canvas dengan id 'myPieChart'
-const ctx = document.getElementById('myPieChart').getContext('2d');
+  // Mendapatkan konteks dari elemen canvas dengan id 'myPieChart'
+  const ctx = document.getElementById('myPieChart').getContext('2d');
 
-// Membuat chart baru dengan tipe pie (pie chart)
-const myPieChart = new Chart(ctx, {
-  type: 'pie', // Jenis chart adalah pie
-  data: {
-    labels: labels, // Label untuk setiap bagian pada pie chart
-    datasets: [{
-      data: values, // Data nilai untuk setiap bagian pada pie chart
-      backgroundColor: [ // Warna latar belakang untuk setiap bagian
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)'
-      ],
-      borderColor: [ // Warna border untuk setiap bagian
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)'
-      ],
-      borderWidth: 1 // Ketebalan border untuk setiap bagian
-    }]
-  },
-  options: {
-    responsive: true, // Chart akan menyesuaikan ukuran dengan elemen parent
-    plugins: {
-      legend: {
-        position: 'left', // Posisi legenda berada di sebelah kiri
-      },
-      tooltip: {
-        enabled: true // Aktifkan tooltip
+  // Membuat chart baru dengan tipe pie (pie chart)
+  const myPieChart = new Chart(ctx, {
+    type: 'pie', // Jenis chart adalah pie
+    data: {
+      labels: labels, // Label untuk setiap bagian pada pie chart
+      datasets: [{
+        data: values, // Data nilai untuk setiap bagian pada pie chart
+        backgroundColor: [ // Warna latar belakang untuk setiap bagian
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)'
+        ],
+        borderColor: [ // Warna border untuk setiap bagian
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)'
+        ],
+        borderWidth: 1 // Ketebalan border untuk setiap bagian
+      }]
+    },
+    options: {
+      responsive: true, // Chart akan menyesuaikan ukuran dengan elemen parent
+      plugins: {
+        legend: {
+          position: 'left', // Posisi legenda berada di sebelah kiri
+        },
+        tooltip: {
+          enabled: true // Aktifkan tooltip
+        }
       }
     }
-}
-});
+  });
 });
 
 
