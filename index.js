@@ -8,91 +8,98 @@ document.addEventListener('DOMContentLoaded', (event) => {
       'Staten Island': 8296
   };
 
-  const labels = Object.keys(boroughCounts);
-  const values = Object.values(boroughCounts);
 
-  const ctx = document.getElementById('myPieChart').getContext('2d');
-  const myPieChart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-          labels: labels,
-          datasets: [{
-              data: values,
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)'
-              ],
-              borderWidth: 1
-          }]
+// Mendapatkan konteks dari elemen canvas dengan id 'myPieChart'
+const ctx = document.getElementById('myPieChart').getContext('2d');
+
+// Membuat chart baru dengan tipe pie (pie chart)
+const myPieChart = new Chart(ctx, {
+  type: 'pie', // Jenis chart adalah pie
+  data: {
+    labels: labels, // Label untuk setiap bagian pada pie chart
+    datasets: [{
+      data: values, // Data nilai untuk setiap bagian pada pie chart
+      backgroundColor: [ // Warna latar belakang untuk setiap bagian
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)'
+      ],
+      borderColor: [ // Warna border untuk setiap bagian
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)'
+      ],
+      borderWidth: 1 // Ketebalan border untuk setiap bagian
+    }]
+  },
+  options: {
+    responsive: true, // Chart akan menyesuaikan ukuran dengan elemen parent
+    plugins: {
+      legend: {
+        position: 'left', // Posisi legenda berada di sebelah kiri
       },
-      options: {
-          responsive: true,
-          plugins: {
-              legend: {
-                  position: 'left',
-              },
-              tooltip: {
-                  enabled: true
-              }
-          }
+      tooltip: {
+        enabled: true // Aktifkan tooltip
       }
-  });
+    }
+}
+});
 });
 
-//Chart 2 dan 3 Line Chart
-// Function to format month-year key
+
+// Fungsi untuk format kunci bulan-tahun
 function getMonthYear(dateStr) {
+  // Mengonversi string tanggal menjadi objek Date
   const date = new Date(dateStr);
+  // Opsi format bulan-tahun
   const options = { year: 'numeric', month: 'short' };
+  // Mengembalikan tanggal yang diformat menjadi string bulan-tahun
   return date.toLocaleDateString('en-US', options);
 }
 
-// Read data from JSON file
+// Membaca data dari file JSON
 fetch('Data_Team_11.json')
-.then(response => response.json())
-.then(data => {
-    // Initialize objects to store sales data per month
+  .then(response => response.json())
+  .then(data => {
+    // Inisialisasi objek untuk menyimpan data penjualan per bulan
     const unitsSoldByMonth = {};
     const salePriceByMonth = {};
 
-    // Convert sale dates to month-year format and calculate total sales per month
+    // Mengonversi tanggal penjualan menjadi format bulan-tahun dan menghitung total penjualan per bulan
     data.forEach(sale => {
-        const saleDate = getMonthYear(sale.SALE_DATE);
-        if (!unitsSoldByMonth[saleDate]) {
-            unitsSoldByMonth[saleDate] = 0;
-            salePriceByMonth[saleDate] = 0;
-        }
-        unitsSoldByMonth[saleDate] += parseFloat(sale.TOTAL_UNITS);
-        salePriceByMonth[saleDate] += parseFloat(sale.SALE_PRICE);
+      const saleDate = getMonthYear(sale.SALE_DATE);
+      if (!unitsSoldByMonth[saleDate]) {
+        // Inisialisasi nilai awal jika belum ada data untuk bulan tersebut
+        unitsSoldByMonth[saleDate] = 0;
+        salePriceByMonth[saleDate] = 0;
+      }
+      // Menambahkan jumlah unit terjual dan harga penjualan pada bulan yang bersangkutan
+      unitsSoldByMonth[saleDate] += parseFloat(sale.TOTAL_UNITS);
+      salePriceByMonth[saleDate] += parseFloat(sale.SALE_PRICE);
     });
 
-    // Ensure all months from September 2016 to August 2017 are represented in the data
+    // Memastikan semua bulan dari September 2016 hingga Agustus 2017 direpresentasikan dalam data
     const months = [];
     for (let i = 0; i < 12; i++) {
-        const date = new Date(2016, 8 + i); // Starting from September 2016 (month 8)
-        const monthYear = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
-        months.push(monthYear);
-        if (!unitsSoldByMonth[monthYear]) {
-            unitsSoldByMonth[monthYear] = 0;
-            salePriceByMonth[monthYear] = 0;
-        }
+      const date = new Date(2016, 8 + i); // Dimulai dari September 2016 (bulan ke-8)
+      const monthYear = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+      months.push(monthYear);
+      if (!unitsSoldByMonth[monthYear]) {
+        // Inisialisasi nilai awal jika belum ada data untuk bulan tersebut
+        unitsSoldByMonth[monthYear] = 0;
+        salePriceByMonth[monthYear] = 0;
+      }
     }
 
-    // Extract month labels and sales values
+   // Ekstrak label bulan dan nilai penjualan
     const unitsSold = months.map(month => unitsSoldByMonth[month]);
     const salePrices = months.map(month => salePriceByMonth[month]);
 
-    // Draw line chart for total units sold using Chart.js
+    // Gambar diagram garis untuk total unit yang terjual menggunakan Chart.js
     const unitsSoldCtx = document.getElementById('unitsSoldChart').getContext('2d');
     const unitsSoldChart = new Chart(unitsSoldCtx, {
         type: 'line',
