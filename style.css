@@ -20,8 +20,11 @@ body {
   padding: 20px;
   display: flex;
   justify-content: space-between;
-  flex-direction: column;
+  align-items: center;
   font-size: large;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .box--navigasi {
@@ -29,10 +32,13 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
+  border: 1px solid;
+  justify-content: space-between;
 }
 
 .box--menu {
   margin-right: 20px;
+
 }
 
 .box--button {
@@ -134,7 +140,8 @@ section {
   align-items: center;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
+
   main {
     grid-template-columns: 1fr;
   }
@@ -148,12 +155,20 @@ section {
     flex-direction: column;
     align-items: center;
   }
-
-  .box--menu {
-    margin: 10px 0;
+  main{
+    display: flex;
+    flex-direction: column;
+  }
+  #data-table th,
+#data-table td {
+  padding: 1px;
+  border: 0px solid var(--bg-primary);
+  }
+  /* Memperkecil ukuran font hanya pada isian tabel (td) */
+  #data-table td {
+    font-size: 10px; /* Sesuaikan ukuran font sesuai kebutuhan Anda */
   }
 }
-
 /* Gaya umum untuk tabel dengan ID data-table */
 #data-table {
   width: auto;
