@@ -246,18 +246,18 @@ data.forEach(entry => {
 return unitsData;
 }
 
-//chart 5
 document.addEventListener('DOMContentLoaded', function() {
-  populateNeighborhoodSelector();
-  const neighborhoodSelector = document.getElementById('neighborhoodSelector');
-  neighborhoodSelector.addEventListener('change', fetchDataAndDisplay);
-  fetchDataAndDisplay(); // Tampilkan chart saat halaman pertama kali dimuat
+  populateNeighborhoodSelector().then(() => {
+    const neighborhoodSelector = document.getElementById('neighborhoodSelector');
+    neighborhoodSelector.addEventListener('change', fetchDataAndDisplay);
+    fetchDataAndDisplay(); // Tampilkan chart saat halaman pertama kali dimuat
+  });
 });
 
 let myChart;
 
 function populateNeighborhoodSelector() {
-  fetch('Data_Team_11.json')
+  return fetch('Data_Team_11.json')
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok ' + response.statusText);
