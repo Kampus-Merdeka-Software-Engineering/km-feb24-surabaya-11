@@ -39,66 +39,7 @@
     </header>
 
     <main>
-      <section id="dashboard">
-        <h2><i class="fa-solid fa-table"></i> Data Table</h2>
-        <h2>
-          Building Unit Sales in the New York Property Market in the Bronx
-          Region
-        </h2>
-        <article>
-          <div>
-            <label for="sort-key">Sort by:</label>
-            <select id="sort-key">
-              <option value="-">-</option>
-              <option value="sale price">Sale Price</option>
-              <option value="sale date">Sale Date</option>
-              <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
-            </select>
-            <button class="box--button" id="sort-button">Sort</button>
-          </div>
-          <div>
-            <label for="filter-key">Filter by:</label>
-            <select id="filter-key">
-              <option value="-">-</option>
-              <option value="building class category">
-                Building Class Category
-              </option>
-              <option value="sale month">Sale Month</option>
-              <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
-            </select>
-            <input type="text" id="filter-value" placeholder="Filter value" />
-            <button class="box--button" id="filter-button">Filter</button>
-            <button class="box--button" id="reset">Reset</button>
-          </div>
-          <div>
-            <label for="page-number">Page:</label>
-            <input type="number" id="page-number" min="1" max="51" value="1" />
-            <button class="box--button" id="go-to-page-button">Go</button>
-          </div>
-          <table border 1 id="data-table">
-            <thead>
-              <tr>
-                <th>Neighborhood</th>
-                <th>Building Class Category</th>
-                <th>Address</th>
-                <th>Total Units</th>
-                <th>Land Square Feet</th>
-                <th>Gross Square Feet</th>
-                <th>Year Built</th>
-                <th>Sale Price</th>
-                <th>Sale Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Data akan diisi menggunakan JavaScript -->
-            </tbody>
-          </table>
-        </article>
-        <div class="pagination_button">
-          <span></span>
-          <div class="index_button"></div>
-        </div>
-      </section>
+      
 
       <section id="chart1">
         <h2><i class="fa-solid fa-chart-pie"></i> Pie Chart</h2>
@@ -147,6 +88,67 @@
                 <script src="index.js"></script>
             </div>
         </article>
+    </section>
+
+    <section id="dashboard">
+      <h2><i class="fa-solid fa-table"></i> Data Table</h2>
+      <h2>
+        Building Unit Sales in the New York Property Market in the Bronx
+        Region
+      </h2>
+      <article>
+        <div>
+          <label for="sort-key">Sort by:</label>
+          <select id="sort-key">
+            <option value="-">-</option>
+            <option value="sale price">Sale Price</option>
+            <option value="sale date">Sale Date</option>
+            <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
+          </select>
+          <button class="box--button" id="sort-button">Sort</button>
+        </div>
+        <div>
+          <label for="filter-key">Filter by:</label>
+          <select id="filter-key">
+            <option value="-">-</option>
+            <option value="building class category">
+              Building Class Category
+            </option>
+            <option value="sale month">Sale Month</option>
+            <!-- Tambahkan opsi lainnya sesuai kebutuhan -->
+          </select>
+          <input type="text" id="filter-value" placeholder="Filter value" />
+          <button class="box--button" id="filter-button">Filter</button>
+          <button class="box--button" id="reset">Reset</button>
+        </div>
+        <div>
+          <label for="page-number">Page:</label>
+          <input type="number" id="page-number" min="1" max="51" value="1" />
+          <button class="box--button" id="go-to-page-button">Go</button>
+        </div>
+        <table border 1 id="data-table">
+          <thead>
+            <tr>
+              <th>Neighborhood</th>
+              <th>Building Class Category</th>
+              <th>Address</th>
+              <th>Total Units</th>
+              <th>Land Square Feet</th>
+              <th>Gross Square Feet</th>
+              <th>Year Built</th>
+              <th>Sale Price</th>
+              <th>Sale Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data akan diisi menggunakan JavaScript -->
+          </tbody>
+        </table>
+      </article>
+      <div class="pagination_button">
+        <span></span>
+        <div class="index_button"></div>
+      </div>
     </section>
     
 

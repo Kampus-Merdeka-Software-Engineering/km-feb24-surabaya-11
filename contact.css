@@ -1,6 +1,6 @@
 html,
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: var(--bg-third);
   margin: 0;
   padding: 0;
@@ -24,6 +24,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: large;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -48,6 +49,7 @@ body {
 
 .box--judul {
   color: var(--txt-primary);
+
   text-decoration: none;
 }
 
@@ -56,13 +58,13 @@ main {
   height: auto;
 }
 
-.container {
+.box--container {
   width: 100%;
   height: auto;
   background-color: var(--bg-third);
 }
 
-.wrapper {
+.box--wrapper {
   flex-wrap: wrap;
   display: flex;
   justify-content: center;
@@ -70,7 +72,7 @@ main {
   height: auto;
 }
 
-.card {
+.box--card {
   border: 1px solid var(--icons-bg-secondary);
   background-color: var(--txt-primary);
   color: var(--txt-secondary);
@@ -79,30 +81,25 @@ main {
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
 
-.text-center {
+.box--text-center {
   text-align: center;
 }
 
-.title {
-  font-size: 80%;
+.box--title {
+  font-size: 90%;
 }
 
-.box--txt.judul {
+.box--txt-judul {
   font-size: 30px;
 }
 
-.icons {
+.box--icons {
   margin-top: 8px;
   font-size: 35px;
   color: var(--icons-bg-primary);
 }
 
-.description {
-  margin-top: 8px;
-  font-size: 0.5em;
-}
-
-.btn {
+.box--btn {
   margin-top: 28px;
   padding: 8px;
   cursor: pointer;
@@ -110,7 +107,7 @@ main {
   width: 80%;
 }
 
-.btn:hover {
+.box--btn:hover {
   background-color: var(--bg-primary);
   color: var(--bg-secondary);
   -ms-transform: rotate(2deg);
@@ -120,9 +117,28 @@ main {
 .box--footer {
   background-color: var(--bg-primary);
   color: var(--icons-bg-primary);
-  padding: 27px;
+  padding: 26.5px;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media screen and (max-width: 900px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+
+  .box--header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .box--navigasi {
+    flex-direction: column;
+  }
+  main {
+    display: flex;
+    flex-direction: column;
+  }
 }
