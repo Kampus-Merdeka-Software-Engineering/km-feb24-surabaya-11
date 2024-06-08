@@ -1,6 +1,8 @@
-// Pie chart dengan data langsung dimasukkan
+// CHART 1 NOT USE DATA JSON
+// Event listener untuk memastikan bahwa kode dijalankan setelah DOM sepenuhnya dimuat
 let jsonData
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
+  // Data jumlah properti di setiap borough
   const boroughCounts = {
     'Manhattan': 18102,
     'Bronx': 6994,
@@ -9,10 +11,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
     'Staten Island': 8296
   };
 
+  // Mendapatkan label dan nilai dari data boroughCounts
   const labels = Object.keys(boroughCounts);
   const values = Object.values(boroughCounts);
 
+  // Mengambil konteks dari canvas untuk Pie Chart
   const ctx = document.getElementById('myPieChart').getContext('2d');
+  // Membuat Pie Chart menggunakan Chart.js
   const myPieChart = new Chart(ctx, {
     type: 'pie',
     data: {
@@ -40,60 +45,58 @@ document.addEventListener('DOMContentLoaded', (event) => {
       responsive: true,
       plugins: {
         legend: {
-          position: 'left',
+          position: 'left', // Posisi legenda di kiri
         },
         tooltip: {
-          enabled: true
+          enabled: true // Mengaktifkan tooltip
         }
       }
     }
   });
 });
 
-//Chart 2 dan 3 Line Chart
-// Function to format month-year key
+// Fungsi untuk memformat tanggal menjadi bulan-tahun
 function getMonthYear(dateStr) {
-  const date = new Date(dateStr);
-  const options = { year: 'numeric', month: 'short' };
-  return date.toLocaleDateString('en-US', options);
+  const date = new Date(dateStr); // Mengubah string tanggal menjadi objek Date
+  const options = { year: 'numeric', month: 'short' }; // Opsi format bulan-tahun
+  return date.toLocaleDateString('en-US', options); // Mengembalikan tanggal yang diformat
 }
 
-// Read data from JSON file
+// Membuat Line Chart untuk total unit yang terjual dan harga penjualan
 function chart3(data) {
-  // Initialize objects to store sales data per month
   const unitsSoldByMonth = {};
   const salePriceByMonth = {};
 
-  // Convert sale dates to month-year format and calculate total sales per month
+  // Mengonversi tanggal penjualan menjadi format bulan-tahun dan menghitung total penjualan per bulan
   data.forEach(sale => {
     const saleDate = getMonthYear(sale.SALE_DATE);
     if (!unitsSoldByMonth[saleDate]) {
-      unitsSoldByMonth[saleDate] = 0;
+      unitsSoldByMonth[saleDate] = 0; // Inisialisasi jika belum ada data untuk bulan tersebut
       salePriceByMonth[saleDate] = 0;
     }
-    unitsSoldByMonth[saleDate] += parseFloat(sale.TOTAL_UNITS);
-    salePriceByMonth[saleDate] += parseFloat(sale.SALE_PRICE);
+    unitsSoldByMonth[saleDate] += parseFloat(sale.TOTAL_UNITS); // Menambahkan jumlah unit terjual
+    salePriceByMonth[saleDate] += parseFloat(sale.SALE_PRICE); // Menambahkan harga penjualan
   });
 
-  // Ensure all months from September 2016 to August 2017 are represented in the data
+  // Memastikan semua bulan dari September 2016 hingga Agustus 2017 ada dalam data
   const months = [];
   for (let i = 0; i < 12; i++) {
-    const date = new Date(2016, 8 + i); // Starting from September 2016 (month 8)
+    const date = new Date(2016, 8 + i); // Mulai dari September 2016
     const monthYear = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
     months.push(monthYear);
     if (!unitsSoldByMonth[monthYear]) {
-      unitsSoldByMonth[monthYear] = 0;
+      unitsSoldByMonth[monthYear] = 0; // Inisialisasi jika belum ada data untuk bulan tersebut
       salePriceByMonth[monthYear] = 0;
     }
   }
 
-  // Extract month labels and sales values
+  // Ekstrak data untuk digunakan dalam chart
   const unitsSold = months.map(month => unitsSoldByMonth[month]);
   const salePrices = months.map(month => salePriceByMonth[month]);
 
-  // Draw line chart for total units sold using Chart.js
+  // Membuat Line Chart untuk total unit yang terjual
   const unitsSoldCtx = document.getElementById('unitsSoldChart').getContext('2d');
-  const unitsSoldChart = new Chart(unitsSoldCtx, {
+  new Chart(unitsSoldCtx, {
     type: 'line',
     data: {
       labels: months,
@@ -108,15 +111,15 @@ function chart3(data) {
     options: {
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true // Mengatur sumbu y agar dimulai dari nol
         }
       }
     }
   });
 
-  // Draw line chart for total sale price using Chart.js
+  // Membuat Line Chart untuk total harga penjualan
   const salePriceCtx = document.getElementById('salePriceChart').getContext('2d');
-  const salePriceChart = new Chart(salePriceCtx, {
+  new Chart(salePriceCtx, {
     type: 'line',
     data: {
       labels: months,
@@ -131,31 +134,44 @@ function chart3(data) {
     options: {
       scales: {
         y: {
-          beginAtZero: true
+          beginAtZero: true // Mengatur sumbu y agar dimulai dari nol
         }
       }
     }
   });
-};
+}
 
-//Chart 4 
-// Mengambil data dari file JSON
+// CHART 4 BAR CHART
+// Fungsi untuk memproses data JSON dan menghitung total unit per wilayah
+function processData(data) {
+  const unitsData = {};
+
+  // Menghitung total unit per wilayah
+  data.forEach(entry => {
+    const region = entry.NEIGHBORHOOD;
+    const units = parseInt(entry.TOTAL_UNITS);
+    if (unitsData[region]) {
+      unitsData[region] += units;
+    } else {
+      unitsData[region] = units;
+    }
+  });
+
+  return unitsData;
+}
+
+// Membuat Bar Chart untuk total unit per wilayah
 function chart4(data) {
-
-
-  // Proses data untuk bar chart
-  const salesData = processData(data);
-
-  // Extract regions and total units
+  const salesData = processData(data); // Memproses data untuk bar chart
   const regions = Object.keys(salesData);
   const totalUnits = Object.values(salesData);
 
-  // Generate an array of colors for the bars
+  // Membuat array warna untuk bar chart
   const colors = regions.map((_, index) => `hsl(${index * 30 % 360}, 70%, 50%)`);
 
-  // Create bar chart
+  // Membuat Bar Chart menggunakan Chart.js
   const ctxBar = document.getElementById('totalSalesChart').getContext('2d');
-  const totalSalesChart = new Chart(ctxBar, {
+  new Chart(ctxBar, {
     type: 'bar',
     data: {
       labels: regions,
@@ -170,14 +186,7 @@ function chart4(data) {
           'rgba(153, 102, 255, 0.2)',
           'rgba(255, 159, 64, 0.2)'
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
-        ],
+        borderColor: colors,
         borderWidth: 1
       }]
     },
@@ -186,15 +195,15 @@ function chart4(data) {
         x: {
           ticks: {
             font: {
-              size: 8 // Ukuran font yang lebih kecil
+              size: 8 // Ukuran font untuk label sumbu x
             }
           }
         },
         y: {
           beginAtZero: true, // Mengatur sumbu y agar dimulai dari nol
           ticks: {
-            callback: function (value, index, values) { // Fungsi callback untuk memformat label ticks
-              return value.toLocaleString(); // Mengembalikan nilai yang diformat sebagai string lokal
+            callback: function (value) {
+              return value.toLocaleString(); // Format angka pada sumbu y
             }
           }
         }
@@ -202,9 +211,9 @@ function chart4(data) {
       plugins: {
         tooltip: {
           callbacks: {
-            label: function (context) {  // Fungsi callback untuk memformat label tooltip
-              return 'Total Units: ' + context.parsed.y.toLocaleString(); // Mengembalikan string yang diformat dengan 'Total Units:' diikuti oleh nilai y yang diformat sebagai string lokal
-            } 
+            label: function (context) {
+              return 'Total Units: ' + context.parsed.y.toLocaleString(); // Format tooltip
+            }
           }
         }
       }
@@ -212,45 +221,32 @@ function chart4(data) {
   });
 }
 
-// Fungsi untuk memproses data JSON dan menghitung total unit per wilayah
-function processData(data) {
-  const unitsData = {};
-
-    // Ambil nilai wilayah dari entri data
-  data.forEach(entry => {
-    const region = entry.NEIGHBORHOOD; // Ambil dan konversi nilai total unit menjadi bilangan bulat
-    const units = parseInt(entry.TOTAL_UNITS); // Sesuaikan kunci ini sesuai dengan struktur JSON Anda
-
-     // Tambahkan unit ke wilayah yang sesuai
-    if (unitsData[region]) {
-      unitsData[region] += units;
-    } else {
-      unitsData[region] = units;
-    }
-  });
-
-  return unitsData;
-}
-
-//chart 5
+//CHART 5 PIE CHART
 // Tambahkan event listener saat dokumen selesai dimuat
-document.addEventListener('DOMContentLoaded', function () {   // Ambil elemen dengan id 'neighborhoodSelector'
-  const neighborhoodSelector = document.getElementById('neighborhoodSelector');   // Ambil elemen dengan id 'neighborhoodSelector'
-  neighborhoodSelector.addEventListener('change', fetchDataAndDisplay(data)); // Tambahkan event listener untuk perubahan pilihan pada 'neighborhoodSelector'
-  fetchDataAndDisplay(data); // Tampilkan chart saat halaman pertama kali dimuat
+document.addEventListener('DOMContentLoaded', function () {
+  // Ambil elemen dengan id 'neighborhoodSelector'
+  const neighborhoodSelector = document.getElementById('neighborhoodSelector');
+  // Tambahkan event listener untuk perubahan pilihan pada 'neighborhoodSelector'
+  neighborhoodSelector.addEventListener('change', fetchDataAndDisplay);
+  // Tampilkan chart saat halaman pertama kali dimuat
+  fetchDataAndDisplay();
 });
 
-let myChart;
-// Fungsi untuk mempopulasi neighborhoodSelector
+let myChart; // Variabel untuk menyimpan instance chart
+
+// Fungsi untuk mempopulasi neighborhoodSelector dengan opsi dari data
 function populateNeighborhoodSelector(data) {
+  // Buat Set untuk menyimpan nilai unik dari NEIGHBORHOOD
   const neighborhoods = new Set(data.map(item => item.NEIGHBORHOOD));
   const neighborhoodSelector = document.getElementById('neighborhoodSelector');
 
+  // Tambahkan opsi "ALL NEIGHBORHOOD"
   const allOption = document.createElement('option');
   allOption.value = 'ALL NEIGHBORHOOD';
   allOption.textContent = 'ALL NEIGHBORHOOD';
   neighborhoodSelector.appendChild(allOption);
 
+  // Tambahkan opsi untuk setiap nilai NEIGHBORHOOD yang unik
   neighborhoods.forEach(neighborhood => {
     const option = document.createElement('option');
     option.value = neighborhood;
@@ -259,24 +255,26 @@ function populateNeighborhoodSelector(data) {
   });
 }
 
-// Fungsi untuk mengambil data dan menampilkan chart
+// Fungsi untuk mengambil data dan menampilkan chart sesuai pilihan wilayah
 function fetchDataAndDisplay() {
+  // Ambil nilai wilayah yang dipilih dari dropdown
   const selectedNeighborhood = document.getElementById('neighborhoodSelector').value;
 
-  // Inisialisasi variabel untuk menyimpan data yang telah difilter
-  let filteredData;
-   // Memeriksa apakah wilayah yang dipilih adalah 'ALL NEIGHBORHOOD'
+  let filteredData; // Variabel untuk menyimpan data yang telah difilter
+
+  // Periksa apakah wilayah yang dipilih adalah 'ALL NEIGHBORHOOD'
   if (selectedNeighborhood === 'ALL NEIGHBORHOOD') {
-    filteredData = jsonData; // Ambil semua data tanpa filter
+    filteredData = jsonData; // Ambil semua data tanpa filter jika dipilih "ALL NEIGHBORHOOD"
   } else {
+    // Filter data sesuai wilayah yang dipilih
     filteredData = jsonData.filter(item => item.NEIGHBORHOOD === selectedNeighborhood);
   }
 
-   // Inisialisasi objek untuk menyimpan kategori kelas bangunan dan total unit per kategori
+  // Hitung total unit per kategori kelas bangunan
   const buildingClassCategories = {};
   filteredData.forEach(item => {
     const buildingClassCategory = item.BUILDING_CLASS_CATEGORY;
-    // Periksa apakah kategori kelas bangunan sudah ada dalam objek buildingClassCategories
+    // Tambahkan jumlah unit ke kategori yang sesuai
     if (buildingClassCategories[buildingClassCategory]) {
       buildingClassCategories[buildingClassCategory] += parseInt(item.TOTAL_UNITS);
     } else {
@@ -284,22 +282,23 @@ function fetchDataAndDisplay() {
     }
   });
 
-
+  // Ekstrak label dan nilai untuk chart
   const labels = Object.keys(buildingClassCategories);
   const dataValues = Object.values(buildingClassCategories);
 
-  // Hapus grafik sebelumnya jika sudah ada
+  // Hapus chart sebelumnya jika ada
   if (myChart) {
     myChart.destroy();
   }
 
+  // Tampilkan chart baru menggunakan data yang diperoleh
   displayPieChart(labels, dataValues);
-
 }
 
-//Fungsi untuk menampilkan diagram lingkaran dengan label dan nilai yang diberikan.
+// Fungsi untuk menampilkan diagram lingkaran dengan label dan nilai yang diberikan
 function displayPieChart(labels, dataValues) {
   const ctx = document.getElementById('buildingChart').getContext('2d');
+  // Buat instance chart baru
   myChart = new Chart(ctx, {
     type: 'pie',
     data: {
@@ -328,7 +327,7 @@ function displayPieChart(labels, dataValues) {
     options: {
       plugins: {
         legend: {
-          display: false // Tampilkan legenda
+          display: false // Sembunyikan legenda
         },
         tooltip: {
           enabled: true // Aktifkan tooltip
