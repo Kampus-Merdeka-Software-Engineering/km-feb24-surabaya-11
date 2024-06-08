@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// CHART 2 DAN 3 LINE CHART
 // Fungsi untuk memformat tanggal menjadi bulan-tahun
 function getMonthYear(dateStr) {
   const date = new Date(dateStr); // Mengubah string tanggal menjadi objek Date
